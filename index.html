@@ -1537,30 +1537,23 @@ saveLocal = function(){ _saveLocalOrig(); guardarNuvem(); };
 
 // ecrã de login (overlay a cobrir tudo)
 function mostrarLogin(modo){
-  modo = modo||'entrar';
   let ov=document.getElementById('loginOverlay');
   if(!ov){ ov=document.createElement('div'); ov.id='loginOverlay'; document.body.appendChild(ov); }
   ov.style.cssText='position:fixed;inset:0;background:var(--cinza-obra);z-index:600;display:flex;align-items:center;justify-content:center;padding:22px';
-  const reg = modo==='registar';
   ov.innerHTML=`<div style="background:var(--bg);width:100%;max-width:380px;border-radius:16px;padding:22px;box-shadow:0 12px 40px rgba(0,0,0,.35)">
       <div style="text-align:center;margin-bottom:16px">
         <div style="font-size:34px">📋</div>
         <div style="font-weight:800;font-size:18px;margin-top:4px">Chefe de Grupo</div>
-        <div style="font-size:12px;color:var(--ink2)">${reg?'Criar conta nova':'Entra na tua conta'}</div>
+        <div style="font-size:12px;color:var(--ink2)">Entra na tua conta</div>
       </div>
       <label class="field" style="margin-bottom:8px">Email<input type="email" id="logEmail" placeholder="o-teu@email.com" autocomplete="username" style="margin-top:4px"></label>
-      <label class="field" style="margin-bottom:4px">Palavra-passe<input type="password" id="logPass" placeholder="••••••" autocomplete="${reg?'new-password':'current-password'}" style="margin-top:4px"></label>
-      ${reg?'<div class="note" style="margin:0 0 8px">Mínimo 6 caracteres.</div>':'<div style="text-align:right;margin:2px 0 10px"><button id="logForgot" style="background:none;border:none;color:var(--verde-esc);font-size:12px;font-weight:700;cursor:pointer">Esqueci a palavra-passe</button></div>'}
-      <button class="act" id="logBtn" style="width:100%;margin-top:6px">${reg?'Criar conta':'Entrar'}</button>
+      <label class="field" style="margin-bottom:4px">Palavra-passe<input type="password" id="logPass" placeholder="••••••" autocomplete="current-password" style="margin-top:4px"></label>
+      <div style="text-align:right;margin:2px 0 10px"><button id="logForgot" style="background:none;border:none;color:var(--verde-esc);font-size:12px;font-weight:700;cursor:pointer">Esqueci a palavra-passe</button></div>
+      <button class="act" id="logBtn" style="width:100%;margin-top:6px">Entrar</button>
       <div id="logMsg" style="font-size:12px;color:var(--verm);text-align:center;min-height:16px;margin-top:8px"></div>
-      <div style="text-align:center;margin-top:6px;font-size:13px">
-        ${reg?'Já tens conta? ':'Ainda não tens conta? '}
-        <button id="logSwap" style="background:none;border:none;color:var(--verde-esc);font-weight:800;cursor:pointer">${reg?'Entrar':'Criar conta'}</button>
-      </div>
     </div>`;
   const msg=ov.querySelector('#logMsg');
   const email=ov.querySelector('#logEmail'), pass=ov.querySelector('#logPass');
-  ov.querySelector('#logSwap').onclick=()=>mostrarLogin(reg?'entrar':'registar');
   const fwd=ov.querySelector('#logForgot');
   if(fwd) fwd.onclick=async()=>{
     const e=(email.value||'').trim();
@@ -1573,7 +1566,7 @@ function mostrarLogin(modo){
     if(!e||!p){ msg.textContent='Preenche email e palavra-passe'; return; }
     msg.style.color='var(--ink2)'; msg.textContent='A processar…';
     try{
-      if(reg) await FB.registar(e,p); else await FB.entrar(e,p);
+      await FB.entrar(e,p);
       // onAuth trata do resto
     }catch(err){ msg.style.color='var(--verm)'; msg.textContent=FB.erroPt(err.code); }
   };
