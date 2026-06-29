@@ -9,6 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Chefe de grupo">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='36' fill='%230E8A6E'/%3E%3Ctext x='90' y='120' font-size='95' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'%3E📋%3C/text%3E%3C/svg%3E">
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%20%22Chefe%20de%20Grupo%22%2C%20%22short_name%22%3A%20%22Chefe%22%2C%20%22start_url%22%3A%20%22./%22%2C%20%22scope%22%3A%20%22./%22%2C%20%22display%22%3A%20%22standalone%22%2C%20%22orientation%22%3A%20%22portrait%22%2C%20%22background_color%22%3A%20%22%23EFF1EE%22%2C%20%22theme_color%22%3A%20%22%230E8A6E%22%2C%20%22icons%22%3A%20%5B%7B%22src%22%3A%20%22data%3Aimage/svg%2Bxml%2C%253Csvg%2520xmlns%253D%2527http%253A//www.w3.org/2000/svg%2527%2520viewBox%253D%25270%25200%2520512%2520512%2527%253E%253Crect%2520width%253D%2527512%2527%2520height%253D%2527512%2527%2520rx%253D%252796%2527%2520fill%253D%2527%25230E8A6E%2527/%253E%253Ctext%2520x%253D%2527256%2527%2520y%253D%2527350%2527%2520font-size%253D%2527280%2527%2520text-anchor%253D%2527middle%2527%2520fill%253D%2527white%2527%253E%25F0%259F%2593%258B%253C/text%253E%253C/svg%253E%22%2C%20%22sizes%22%3A%20%22512x512%22%2C%20%22type%22%3A%20%22image/svg%2Bxml%22%2C%20%22purpose%22%3A%20%22any%20maskable%22%7D%5D%7D">
 <title>Constróii · Chefe de grupo</title>
 <style>
 :root{
@@ -846,6 +847,8 @@ function rDados(){
     ${utilizador? `<div class="note" style="margin-top:0">Sessão iniciada como <b>${utilizador.email}</b>. Os teus dados sincronizam automaticamente na cloud.</div>
       <button class="sec" id="bSair" style="margin-top:8px">Terminar sessão</button>`
      : `<div class="note" style="margin-top:0">A trabalhar em modo local (sem sessão). Os dados ficam só neste telemóvel.</div>`}
+    ${!appJaInstalada()? `<hr class="sep"><div class="note" style="margin-top:0">Instala a app no telemóvel para abrir como uma aplicação normal, em ecrã inteiro.</div>
+      <button class="act" id="bInstalar" style="margin-top:8px;width:100%">📲 Instalar app no telemóvel</button>`:''}
   </div>
 
   <div class="big"><div class="titulo">Quem és tu</div>
@@ -1202,6 +1205,8 @@ function ligar(){
   if(bSc) bSc.onclick=()=>{ chefe=(document.getElementById('dChefe').value||'').trim().toUpperCase(); saveLocal(); render(); toast('Guardado'); };
   const bSair=document.getElementById('bSair');
   if(bSair) bSair.onclick=async()=>{ if(!confirm('Terminar sessão? Os dados ficam guardados na cloud.')) return; try{ await FB.sair(); }catch(e){} aoSair(); };
+  const bInst=document.getElementById('bInstalar');
+  if(bInst) bInst.onclick=instalarApp;
   const bNoD=document.getElementById('bNovaObraDados'); if(bNoD) bNoD.onclick=pedirNovaObra;
   document.querySelectorAll('[data-obradel]').forEach(b=>b.onclick=()=>{
     const id=b.dataset.obradel; const o=STORE.obras.find(x=>x.id===id); if(!o) return;
@@ -1513,6 +1518,24 @@ document.getElementById('btnArquivo').addEventListener('click',()=>{ tab='arquiv
 loadLocal();
 garantirFasesTodas();
 garantirEquipaGlobal();
+
+/* ============================ INSTALAR APP (PWA) ============================ */
+let promptInstalar=null;   // guarda o evento beforeinstallprompt (Android/Chrome)
+window.addEventListener('beforeinstallprompt', e=>{ e.preventDefault(); promptInstalar=e; render(); });
+window.addEventListener('appinstalled', ()=>{ promptInstalar=null; toast('App instalada ✓'); render(); });
+function appJaInstalada(){ return window.matchMedia && window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone===true; }
+function ehIOS(){ return /iphone|ipad|ipod/i.test(navigator.userAgent); }
+async function instalarApp(){
+  if(promptInstalar){
+    promptInstalar.prompt();
+    try{ await promptInstalar.userChoice; }catch(e){}
+    promptInstalar=null; render();
+  } else if(ehIOS()){
+    alert('Para instalar no iPhone:\n\n1. Abre esta página no Safari\n2. Toca no botão Partilhar (quadrado com seta ↑)\n3. Escolhe "Adicionar ao ecrã principal"');
+  } else {
+    alert('Para instalar:\n\nNo Chrome, toca nos três pontinhos (⋮) no canto superior direito e escolhe "Instalar aplicação" ou "Adicionar ao ecrã principal".');
+  }
+}
 
 /* ============================ LOGIN / SINCRONIZAÇÃO (Firebase) ============================ */
 let utilizador=null;        // {uid, email} quando logado
