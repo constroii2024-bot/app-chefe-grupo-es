@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0E8A6E">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Chefe de grupo">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='36' fill='%230E8A6E'/%3E%3Ctext x='90' y='120' font-size='95' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'%3E📋%3C/text%3E%3C/svg%3E">
+<title>Constróii · Chefe de grupo</title>
+<style>
+:root{
+  --bg:#EFF1EE; --card:#FFFFFF; --ink:#22272B; --ink2:#5A636B;
+  --linha:#DDE1DC; --laranja:#E8650D; --laranja-esc:#C45104;
+  --verde:#0E8A6E; --verde-esc:#0A6E58; --verm:#C0392B; --cinza-obra:#2E3A42;
+  --mono:ui-monospace,'SF Mono','Cascadia Mono',Consolas,monospace;
+  --sans:-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.45;-webkit-text-size-adjust:100%}
+header{background:var(--cinza-obra);color:#fff;padding:12px 16px 0;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.18)}
+.brand{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.brand h1{font-size:16px;font-weight:800;letter-spacing:.05em}
+.brand h1 span{color:var(--verde)}
+.brand .who{font-family:var(--mono);font-size:11px;opacity:.85;text-align:right}
+.obrasel{margin:8px 0 0;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.obrasel select{flex:1;min-width:160px;padding:9px 10px;border-radius:8px;border:1px solid #44525c;background:#222d34;color:#fff;font-size:14px;font-weight:700}
+.obrabar{margin:10px 0 0;display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.obrabar button{flex:1 1 0;min-width:0;white-space:nowrap;padding:10px 10px;border-radius:8px;border:1px solid #44525c;background:#222d34;color:#aeb8bf;font-size:13px;font-weight:800;cursor:pointer;letter-spacing:.02em;text-overflow:ellipsis;overflow:hidden}
+.obrabar button.on{background:var(--laranja);color:#fff;border-color:var(--laranja)}
+nav{display:flex;gap:2px;overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:10px;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav button{background:#222d34;color:#aeb8bf;border:none;padding:10px 12px;font-size:12.5px;font-weight:700;cursor:pointer;border-radius:8px 8px 0 0;white-space:nowrap;display:inline-flex;align-items:center;gap:5px;flex:0 0 auto}
+nav button.on{background:var(--bg);color:var(--ink);box-shadow:inset 0 -3px 0 var(--verde)}
+nav button .ic{font-size:15px;line-height:1}
+main{padding:16px;max-width:760px;margin:0 auto;padding-bottom:90px}
+.big{background:var(--card);border:1px solid var(--linha);border-radius:10px;padding:14px;margin-bottom:14px}
+.big .titulo{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink2);font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:7px}
+.big .titulo::before{content:'';width:9px;height:9px;background:var(--verde);border-radius:2px;display:inline-block}
+.note{font-size:12px;color:var(--ink2);margin:6px 0;line-height:1.4}
+label.field{display:flex;flex-direction:column;gap:4px;font-size:11px;text-transform:uppercase;letter-spacing:.03em;color:var(--ink2);font-weight:700}
+input[type=text],input[type=number],input[type=date],select,textarea{padding:10px 11px;border:1px solid var(--linha);border-radius:8px;font-size:15px;background:#fff;font-family:inherit;width:100%}
+input[type=number]{font-family:var(--mono);text-align:right}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:11px}
+.row > label.field{flex:1;min-width:120px}
+button.act{background:var(--verde);color:#fff;border:none;padding:12px 16px;border-radius:9px;font-weight:800;font-size:14px;cursor:pointer}
+button.act:active{background:var(--verde-esc)}
+button.sec{background:#fff;color:var(--ink);border:1px solid var(--linha);padding:11px 14px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer}
+button.lar{background:var(--laranja)}button.lar:active{background:var(--laranja-esc)}
+button.danger{color:var(--verm);border-color:#f0c5be}
+button.mini{background:none;border:none;cursor:pointer;font-size:15px;padding:3px 6px}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0}
+.chk{display:flex;gap:7px;flex-wrap:wrap}
+.chk label{display:flex;align-items:center;gap:6px;background:#F4F6F3;border:1px solid var(--linha);border-radius:8px;padding:9px 12px;font-size:13px;cursor:pointer;font-weight:600}
+.chk label.sel{background:#E2F2EC;border-color:var(--verde);color:var(--verde-esc)}
+.chk label input{width:auto;margin:0}
+table{width:100%;border-collapse:collapse;background:var(--card);font-size:13px}
+th{background:#F5F7F4;text-align:left;padding:8px 9px;font-size:10.5px;text-transform:uppercase;letter-spacing:.03em;color:var(--ink2);border-bottom:1px solid var(--linha)}
+td{padding:8px 9px;border-bottom:1px solid var(--linha)}
+td.n,th.n{text-align:right;font-family:var(--mono)}
+.scroll{overflow-x:auto;border:1px solid var(--linha);border-radius:10px}
+.tagF{font-weight:800;font-size:10px;padding:2px 7px;border-radius:5px;white-space:nowrap;display:inline-block}
+.pill{display:inline-block;font-size:11px;padding:3px 9px;border-radius:20px;background:#E2F2EC;color:var(--verde-esc);font-weight:700}
+.empty{text-align:center;color:var(--ink2);padding:24px 12px;font-size:13px}
+.emoji{font-size:30px;display:block;margin-bottom:6px}
+.banner{background:#FFF7E6;border:1px solid #F0D78A;color:#7a5d12;padding:11px 13px;border-radius:10px;margin-bottom:14px;font-size:13px}
+.banner.warm{background:#FDF1E7;border-color:#F0C39A;color:#8a4a12}
+.fab{position:fixed;left:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(239,241,238,0) 0%,var(--bg) 30%);padding:14px 16px;display:flex;gap:10px;justify-content:center;z-index:90}
+.fab .inner{max-width:760px;width:100%;display:flex;gap:10px}
+.fab .inner button{flex:1}
+.toast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--cinza-obra);color:#fff;padding:11px 18px;border-radius:30px;font-size:13px;font-weight:700;opacity:0;transition:.3s;pointer-events:none;z-index:200;box-shadow:0 4px 14px rgba(0,0,0,.3)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* mapa de trabalho */
+.maptools{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 12px}
+.maptools button{border:2px solid var(--verde);background:transparent;color:var(--verde-esc);padding:7px 13px;border-radius:8px;font-weight:800;font-size:13px;cursor:pointer}
+.mapmes{font-weight:700;font-size:12px;margin:8px 0 4px;background:#EAF4EF;padding:5px 9px;border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:5px}
+.mapgrid{overflow-x:auto;border:1px solid var(--linha);border-radius:10px}
+.mapgrid table{border-collapse:collapse;font-size:11px}
+.mapgrid th.nm{position:sticky;left:0;background:#fff;text-align:left;padding:5px 8px;min-width:96px;z-index:2;border-bottom:1px solid var(--linha)}
+.mapgrid td.nm{position:sticky;left:0;background:#fff;font-weight:700;padding:5px 8px;white-space:nowrap;z-index:2;border-right:1px solid var(--linha)}
+.mapgrid th.dh{padding:5px 0;width:26px;min-width:26px;text-align:center;font-weight:800;color:#fff;cursor:pointer;border:1px solid #fff;font-size:11px}
+.mapgrid td.cel{width:26px;min-width:26px;height:30px;text-align:center;font-weight:800;font-size:12px;border:1px solid #EBEEEA;cursor:pointer;color:#fff;-webkit-user-select:none;user-select:none}
+.legend{font-size:11px;color:var(--ink2);margin:4px 0 0;display:flex;gap:12px;flex-wrap:wrap}
+.legend b{font-size:12px}
+details summary{cursor:pointer;font-size:13px;font-weight:700;color:var(--verde-esc);padding:4px 0}
+.kbd{font-family:var(--mono);background:#F0F2EF;padding:1px 6px;border-radius:4px;font-size:12px}
+textarea{min-height:120px;font-family:var(--mono);font-size:12px;resize:vertical}
+hr.sep{border:none;border-top:1px dashed var(--linha);margin:12px 0}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <h1>CONSTRÓII<span>·</span>CHEFE DE GRUPO</h1>
+    <div class="who" id="whoBox">—</div>
+  </div>
+  <div id="obraBar" class="obrabar"></div>
+  <div class="obrasel">
+    <button class="mini" id="btnTodas" title="Resumo geral de todas as obras" style="background:#222d34;color:#fff;border-radius:8px;padding:9px 11px;font-size:13px;border:none;flex:1">📊 Geral obras</button>
+    <button class="mini" id="btnEquipa" title="Equipa" style="background:#222d34;color:#fff;border-radius:8px;padding:9px 11px;font-size:13px;flex:1">👷 Equipa</button>
+    <button class="mini" id="btnFaturas" title="Faturas" style="background:#222d34;color:#fff;border-radius:8px;padding:9px 11px;font-size:13px;flex:1">🧾 Faturas</button>
+  </div>
+  <nav id="nav">
+    <button data-t="resumo"><span class="ic">📊</span>Resumo</button>
+    <button data-t="auto" class="on"><span class="ic">📐</span>Auto</button>
+    <button data-t="horas"><span class="ic">⏱️</span>Horas</button>
+    <button data-t="mapa"><span class="ic">📅</span>Mapa</button>
+    <button data-t="arquivo"><span class="ic">📷</span>Arquivo</button>
+    <button data-t="dados"><span class="ic">🔄</span>Dados</button>
+  </nav>
+</header>
+<main id="main"></main>
+
+<div class="fab" id="fab"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================================
+   APP CHEFE DE GRUPO — Constróii ES
+   Usa exatamente o mesmo modelo de dados da app Funcionários:
+   STORE = { obras:[{id,nome,db}], ativa, ultimoBackup }
+   db    = { config{fases[],precos,...}, workers[{nome}], zones[], ausencias[], roles{}, ... }
+   ausencias = MAPA DE TRABALHO: {nome, dia:'AAAA-MM-DD', tipo:'trabalho'|'ferias'|'faltas', fase:'F1'}
+   Exporta JSON com a chave constroii_es_func_multi_v3 -> importa direto na app Funcionários.
+   ========================================================================= */
+
+const KEY_MULTI = 'constroii_es_func_multi_v3';     // mesma chave da app Funcionários (p/ exportar)
+const KEY_LOCAL = 'constroii_es_chefe_v1';          // cache local desta app
+
+/* ============================ ARQUIVO DE FOTOS (IndexedDB) ============================ */
+// As fotos vão para IndexedDB (aguenta muito mais que o localStorage), comprimidas em JPEG.
+const FOTO_DB='constroii_chefe_fotos', FOTO_STORE='fotos';
+let _fdb=null;
+function fotoDB(){
+  return new Promise((res,rej)=>{
+    if(_fdb) return res(_fdb);
+    const r=indexedDB.open(FOTO_DB,1);
+    r.onupgradeneeded=e=>{ const db=e.target.result; if(!db.objectStoreNames.contains(FOTO_STORE)) db.createObjectStore(FOTO_STORE,{keyPath:'id'}); };
+    r.onsuccess=e=>{ _fdb=e.target.result; res(_fdb); };
+    r.onerror=e=>rej(e);
+  });
+}
+async function fotoGuardar(reg){ const db=await fotoDB(); return new Promise((res,rej)=>{ const tx=db.transaction(FOTO_STORE,'readwrite'); tx.objectStore(FOTO_STORE).put(reg); tx.oncomplete=()=>res(reg); tx.onerror=e=>rej(e); }); }
+async function fotoApagar(id){ const db=await fotoDB(); return new Promise((res,rej)=>{ const tx=db.transaction(FOTO_STORE,'readwrite'); tx.objectStore(FOTO_STORE).delete(id); tx.oncomplete=()=>res(); tx.onerror=e=>rej(e); }); }
+async function fotoListar(tipo){ const db=await fotoDB(); return new Promise((res,rej)=>{ const tx=db.transaction(FOTO_STORE,'readonly'); const req=tx.objectStore(FOTO_STORE).getAll(); req.onsuccess=()=>{ let l=req.result||[]; if(tipo) l=l.filter(x=>x.tipo===tipo); l.sort((a,b)=>(b.data||'').localeCompare(a.data||'')||b.id-a.id); res(l); }; req.onerror=e=>rej(e); }); }
+async function fotoApagarTudo(){ try{ const db=await fotoDB(); return new Promise((res)=>{ const tx=db.transaction(FOTO_STORE,'readwrite'); tx.objectStore(FOTO_STORE).clear(); tx.oncomplete=()=>res(); tx.onerror=()=>res(); }); }catch(e){} }
+// comprime uma imagem (File) para JPEG ~1280px máx, devolve dataURL
+function comprimirImagem(file, maxLado=1280, q=0.72){
+  return new Promise((res,rej)=>{
+    const img=new Image(); const url=URL.createObjectURL(file);
+    img.onload=()=>{
+      let {width:w,height:h}=img;
+      if(w>h && w>maxLado){ h=Math.round(h*maxLado/w); w=maxLado; }
+      else if(h>=w && h>maxLado){ w=Math.round(w*maxLado/h); h=maxLado; }
+      const cv=document.createElement('canvas'); cv.width=w; cv.height=h;
+      cv.getContext('2d').drawImage(img,0,0,w,h);
+      URL.revokeObjectURL(url);
+      res(cv.toDataURL('image/jpeg',q));
+    };
+    img.onerror=e=>{ URL.revokeObjectURL(url); rej(e); };
+    img.src=url;
+  });
+}
+
+
+// ---- semente mínima (caso não haja dados carregados): obras e equipa atuais ----
+const SEED = {
+  obras:[
+    {id:'segovia1', nome:'SEGOVIA_1_92_VIVENDAS'},
+    {id:'obra1781632576049', nome:'SEGOVIA_2_RESIDENCIA_EST'},
+    {id:'obra1781800099368', nome:'SEGOVIA_0_ALBERTO'}
+  ],
+  workers:['MAIKER','ANTONIO','NEIVANDER','LIONALDO','LEOMILDO'],
+  fases:[
+    {id:'F1',nome:'EPS',cor:'#E8650D'},
+    {id:'F2',nome:'BARRAMENTO',cor:'#1F7A4D'},
+    {id:'F3',nome:'PINTURA',cor:'#3D5A99'},
+    {id:'F4',nome:'FASE 4',cor:'#9B287B',ativa:false},
+    {id:'F5',nome:'FASE 5',cor:'#0E7C7B',ativa:false},
+    {id:'F6',nome:'FASE 6',cor:'#B8860B',ativa:false}
+  ],
+  precos:{F1:7,F2:6,F3:4.5,HORAS:12}
+};
+
+function novaObraDB(nome){
+  return {
+    config:{obra:nome||'', cliente:'', orcamento:0,
+      fases:JSON.parse(JSON.stringify(SEED.fases)),
+      precos:JSON.parse(JSON.stringify(SEED.precos)), pctChefe:0, pctServente:0, pctRetencao:0},
+    workers:[], roles:{}, payments:[], zones:[],
+    extras:[], ausencias:[], prodReg:{}, nextZoneId:1, nextExtraId:1, nextPayId:1, histCfg:[]
+  };
+}
+// cria uma obra nova do zero e torna-a ativa
+function criarObra(nome){
+  nome=(nome||'').trim(); if(!nome) return false;
+  const id='obra'+Date.now();
+  STORE.obras.push({id, nome, db:novaObraDB(nome)});
+  STORE.ativa=id;
+  // os funcionários da equipa global passam a constar na obra (todos em todas as obras)
+  garantirEquipaGlobal();
+  const db=novaObraDBref(id); if(db) db.workers=STORE.equipaGlobal.map(w=>({nome:w.nome}));
+  saveLocal();
+  return true;
+}
+function novaObraDBref(id){ const o=STORE.obras.find(x=>x.id===id); return o?o.db:null; }
+// eliminar uma obra inteira
+function eliminarObra(id){
+  STORE.obras=STORE.obras.filter(o=>o.id!==id);
+  if(STORE.ativa===id) STORE.ativa = STORE.obras[0] ? STORE.obras[0].id : null;
+  saveLocal();
+}
+const DADOS_INICIAIS = {"obras":[{"id":"segovia1","nome":"SEGOVIA_1_92_VIVENDAS","db":{"config":{"obra":"SEGOVIA_1_92_VIVENDAS","cliente":"GRUPO GARCIA S.L.","fases":[{"id":"F1","nome":"EPS","cor":"#E8650D"},{"id":"F2","nome":"BARRAMENTO","cor":"#1F7A4D"},{"id":"F3","nome":"PINTURA","cor":"#3D5A99"},{"id":"F4","nome":"FASE 4","cor":"#9B287B","ativa":false},{"id":"F5","nome":"FASE 5","cor":"#0E7C7B","ativa":false},{"id":"F6","nome":"FASE 6","cor":"#B8860B","ativa":false}],"precos":{"F1":7,"F2":6,"F3":4.5,"HORAS":12}},"workers":[{"nome":"MAIKER"},{"nome":"ANTONIO"},{"nome":"NEIVANDER"},{"nome":"LIONALDO"},{"nome":"LEOMILDO"}],"roles":{"2025-12":{"MAIKER":"CHEFE","ANTONIO":"OFICIAL","NEIVANDER":"OFICIAL","LIONALDO":"OFICIAL","LEOMILDO":"OFICIAL"},"2026-04":{"MAIKER":"CHEFE","ANTONIO":"OFICIAL","NEIVANDER":"OFICIAL","LIONALDO":"OFICIAL","LEOMILDO":"OFICIAL"},"2026-05":{"MAIKER":"CHEFE","ANTONIO":"OFICIAL","NEIVANDER":"OFICIAL","LIONALDO":"OFICIAL","LEOMILDO":"OFICIAL"},"2025-11":{"MAIKER":"CHEFE","ANTONIO":"OFICIAL","NEIVANDER":"OFICIAL","LIONALDO":"OFICIAL","LEOMILDO":"OFICIAL"},"2025-10":{"MAIKER":"CHEFE","ANTONIO":"OFICIAL","NEIVANDER":"OFICIAL","LIONALDO":"OFICIAL","LEOMILDO":"SERVENTE"},"2026-02":{"MAIKER":"CHEFE","ANTONIO":"OFICIAL","NEIVANDER":"OFICIAL","LIONALDO":"OFICIAL","LEOMILDO":"OFICIAL"},"2026-06":{"MAIKER":"CHEFE","ANTONIO":"OFICIAL","NEIVANDER":"OFICIAL","LIONALDO":"OFICIAL","LEOMILDO":"OFICIAL"},"2026-03":{"MAIKER":"CHEFE","ANTONIO":"OFICIAL","NEIVANDER":"OFICIAL","LIONALDO":"OFICIAL","LEOMILDO":"OFICIAL"}},"zones":[{"id":1,"desc":"Fachada lateral 1 (A)","comp":0,"alt":0,"area":232.16,"dataAuto":"2025-10-31","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":null,"F2":null,"F3":null,"F4":null,"F5":null,"F6":null},"anulada":true},{"id":2,"desc":"Fachada lateral 1 (B)","comp":0,"alt":0,"area":41.62,"dataAuto":"2025-10-31","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"anulada":true},"F2":{"anulada":true},"F3":{"mes":"2026-05","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F4":null,"F5":null,"F6":null}},{"id":3,"desc":"Fachada lateral 1 S","comp":0,"alt":0,"area":137.28,"dataAuto":"2025-10-31","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":null,"F2":null,"F3":null,"F4":null,"F5":null,"F6":null},"anulada":true},{"id":4,"desc":"Fachada lateral 1 — teto","comp":0,"alt":0,"area":11.36,"dataAuto":"2025-10-31","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":null,"F2":null,"F3":null,"F4":null,"F5":null,"F6":null},"anulada":true},{"id":5,"desc":"FOTO1 FACHADA VENTANAS/TERRAÇO","comp":0,"alt":0,"area":53.2,"dataAuto":"2025-11-30","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"anulada":true},"F2":{"anulada":true},"F3":{"mes":"2026-05","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F4":null,"F5":null,"F6":null}},{"id":6,"desc":"FOTO3 FACHADA VENTANAS1","comp":0,"alt":0,"area":209.54,"dataAuto":"2025-11-30","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"anulada":true},"F2":{"anulada":true},"F3":{"mes":"2026-05","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F4":null,"F5":null,"F6":null}},{"id":7,"desc":"FOTO2 FACHADA LATERAL TETOS1","comp":0,"alt":0,"area":125.06,"dataAuto":"2025-11-30","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"anulada":true},"F2":{"anulada":true},"F3":{"mes":"2026-05","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F4":null,"F5":null,"F6":null}},{"id":8,"desc":"FOTO2 FACHADA LATERAL TETOS2","comp":0,"alt":0,"area":125.06,"dataAuto":"2025-11-30","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"anulada":true},"F2":{"anulada":true},"F3":{"mes":"2026-05","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F4":null,"F5":null,"F6":null}},{"id":9,"desc":"FOTO4 FACHADA BIBLIOTECA","comp":0,"alt":0,"area":477.65,"dataAuto":"2025-11-30","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":null,"F2":null,"F3":null,"F4":null,"F5":null,"F6":null},"anulada":true},{"id":10,"desc":"TERRAÇO BILIOTECA + LATERAL","comp":0,"alt":0,"area":115.77,"dataAuto":"2025-12-31","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":null,"F2":null,"F3":null,"F4":null,"F5":null,"F6":null},"anulada":true},{"id":11,"desc":"FACHADA TERRAÇO LATERAL","comp":0,"alt":0,"area":57.05,"dataAuto":"2025-12-31","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"anulada":true},"F2":{"anulada":true},"F3":{"mes":"2026-05","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F4":null,"F5":null,"F6":null}},{"id":12,"desc":"FACHADA LATERAL 2","comp":0,"alt":0,"area":156.79,"dataAuto":"2025-12-31","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"anulada":true},"F2":{"anulada":true},"F3":{"anulada":true,"anterior":null},"F4":null,"F5":null,"F6":null}},{"id":13,"desc":"FACHADA LATERAL INTERIOR","comp":0,"alt":0,"area":221.39,"dataAuto":"2025-12-31","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"anulada":true},"F2":{"anulada":true},"F3":{"anulada":true,"anterior":null},"F4":null,"F5":null,"F6":null}},{"id":14,"desc":"FACHADA LATERAL INTERIOR TETO","comp":0,"alt":0,"area":43.01,"dataAuto":"2025-12-31","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"anulada":true},"F2":{"anulada":true},"F3":{"anulada":true,"anterior":null},"F4":null,"F5":null,"F6":null}},{"id":15,"desc":"FACHADA LATERAL INTERIOR TETO","comp":0,"alt":0,"area":35.52,"dataAuto":"2025-12-31","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"anulada":true},"F2":{"anulada":true},"F3":{"anulada":true,"anterior":null},"F4":null,"F5":null,"F6":null}},{"id":16,"desc":"FACHADA LATERAL INTERIOR FUNDO","comp":0,"alt":0,"area":15.58,"dataAuto":"2025-12-31","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"anulada":true},"F2":{"anulada":true},"F3":{"mes":"2026-05","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F4":null,"F5":null,"F6":null}},{"id":17,"desc":"TETO INT. TERRAZA","comp":0,"alt":0,"area":37.57,"dataAuto":"2025-12-31","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"anulada":true},"F2":{"anulada":true},"F3":{"mes":"2026-05","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F4":null,"F5":null,"F6":null}},{"id":18,"desc":"F qC. y T. DE SEGOVIA (INT)","comp":0,"alt":0,"area":138.62,"dataAuto":"2025-12-31","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"anulada":true},"F2":{"anulada":true},"F3":{"mes":"2026-05","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F4":null,"F5":null,"F6":null}},{"id":19,"desc":"FOTO1 FEV Fachada principal (janelas)","comp":0,"alt":0,"area":280.37,"dataAuto":"2026-02-28","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"anulada":true},"F2":{"anulada":true},"F3":{"anulada":true},"F4":null,"F5":null,"F6":null}},{"id":20,"desc":"FOTO1 FEV Sub 1,54","comp":0,"alt":0,"area":1.54,"dataAuto":"2026-02-28","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"anulada":true},"F2":{"anulada":true},"F3":{"anulada":true},"F4":null,"F5":null,"F6":null}},{"id":21,"desc":"FOTO1 FEV Teto pequeno 1","comp":0,"alt":0,"area":11.01,"dataAuto":"2026-02-28","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"anulada":true},"F2":{"anulada":true},"F3":{"anulada":true},"F4":null,"F5":null,"F6":null}},{"id":22,"desc":"FOTO1 FEV Teto pequeno 2","comp":0,"alt":0,"area":11.01,"dataAuto":"2026-02-28","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"anulada":true},"F2":{"anulada":true},"F3":{"anulada":true},"F4":null,"F5":null,"F6":null}},{"id":23,"desc":"FOTO1 FEV Teto pequeno 3","comp":0,"alt":0,"area":11.01,"dataAuto":"2026-02-28","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"anulada":true},"F2":{"anulada":true},"F3":{"anulada":true},"F4":null,"F5":null,"F6":null}},{"id":24,"desc":"FOTO2 FEV Sub 2,44","comp":0,"alt":0,"area":2.44,"dataAuto":"2026-02-28","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":null,"F2":null,"F3":null,"F4":null,"F5":null,"F6":null},"anulada":true},{"id":25,"desc":"FOTO2 FEV Tetos 91,65","comp":0,"alt":0,"area":91.65,"dataAuto":"2026-02-28","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":null,"F2":null,"F3":null,"F4":null,"F5":null,"F6":null},"anulada":true},{"id":26,"desc":"FOTO2 FEV Sub 42,90","comp":0,"alt":0,"area":42.9,"dataAuto":"2026-02-28","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":null,"F2":null,"F3":null,"F4":null,"F5":null,"F6":null},"anulada":true},{"id":27,"desc":"FOTO2 FEV Sub 6,24","comp":0,"alt":0,"area":6.24,"dataAuto":"2026-02-28","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":null,"F2":null,"F3":null,"F4":null,"F5":null,"F6":null},"anulada":true},{"id":28,"desc":"FOTO2 FEV Balcão 50,22","comp":0,"alt":0,"area":50.22,"dataAuto":"2026-02-28","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":null,"F2":null,"F3":null,"F4":null,"F5":null,"F6":null},"anulada":true},{"id":29,"desc":"FOTO2 FEV Balcão 50,63 (A)","comp":0,"alt":0,"area":50.63,"dataAuto":"2026-02-28","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":null,"F2":null,"F3":null,"F4":null,"F5":null,"F6":null},"anulada":true},{"id":30,"desc":"FOTO2 FEV Balcão 50,63 (B)","comp":0,"alt":0,"area":50.63,"dataAuto":"2026-02-28","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":null,"F2":null,"F3":null,"F4":null,"F5":null,"F6":null},"anulada":true},{"id":31,"desc":"FOTO2 FEV Corredor / túnel","comp":0,"alt":0,"area":130.1,"dataAuto":"2026-02-28","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"anulada":true},"F2":{"anulada":true},"F3":{"mes":"2026-05","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F4":null,"F5":null,"F6":null}},{"id":32,"desc":"FOTO3 FEV Sub 11,90","comp":0,"alt":0,"area":11.9,"dataAuto":"2026-02-28","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"anulada":true},"F2":{"anulada":true},"F3":{"anulada":true},"F4":null,"F5":null,"F6":null}},{"id":33,"desc":"FOTO3 FEV Sub 8,19 (A)","comp":0,"alt":0,"area":8.19,"dataAuto":"2026-02-28","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"anulada":true},"F2":{"anulada":true},"F3":{"anulada":true},"F4":null,"F5":null,"F6":null}},{"id":34,"desc":"FOTO3 FEV Sub 8,19 (B)","comp":0,"alt":0,"area":8.19,"dataAuto":"2026-02-28","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"anulada":true},"F2":{"anulada":true},"F3":{"anulada":true},"F4":null,"F5":null,"F6":null}},{"id":35,"desc":"FOTO3 FEV Tetos + túnel TRIS","comp":0,"alt":0,"area":108.58,"dataAuto":"2026-02-28","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"anulada":true},"F2":{"anulada":true},"F3":{"anulada":true},"F4":null,"F5":null,"F6":null}},{"id":36,"desc":"FOTO4 FEV Fachada lat. comp. (A)","comp":0,"alt":0,"area":81.77,"dataAuto":"2026-02-28","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"anulada":true},"F2":{"anulada":true},"F3":{"anulada":true},"F4":null,"F5":null,"F6":null}},{"id":37,"desc":"FOTO4 FEV Fachada lat. comp. (B)","comp":0,"alt":0,"area":58.28,"dataAuto":"2026-02-28","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"anulada":true},"F2":{"anulada":true},"F3":{"anulada":true},"F4":null,"F5":null,"F6":null}},{"id":38,"desc":"FOTO4 FEV Fachada lat. comp. ©","comp":0,"alt":0,"area":23.1,"dataAuto":"2026-02-28","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"anulada":true},"F2":{"anulada":true},"F3":{"anulada":true},"F4":null,"F5":null,"F6":null}},{"id":39,"desc":"FOTO1 MARÇO Fachada principal grande","comp":0,"alt":0,"area":438.2,"dataAuto":"2026-03-31","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"anulada":true},"F2":{"anulada":true},"F3":{"anulada":true},"F4":null,"F5":null,"F6":null}},{"id":40,"desc":"FOTO1 MARÇO Fachada lateral","comp":0,"alt":0,"area":104.58,"dataAuto":"2026-03-31","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"anulada":true},"F2":{"anulada":true},"F3":{"mes":"2026-05","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F4":null,"F5":null,"F6":null}},{"id":41,"desc":"FOTO1 MARÇO Fachada pequena","comp":0,"alt":0,"area":39.05,"dataAuto":"2026-03-31","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"anulada":true},"F2":{"anulada":true},"F3":{"mes":"2026-05","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F4":null,"F5":null,"F6":null}},{"id":42,"desc":"FOTO2 MARÇO Sub 5,87","comp":0,"alt":0,"area":5.87,"dataAuto":"2026-03-31","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"anulada":true},"F2":{"anulada":true},"F3":{"anulada":true},"F4":null,"F5":null,"F6":null}},{"id":43,"desc":"FOTO2 MARÇO Sub 10,35","comp":0,"alt":0,"area":10.35,"dataAuto":"2026-03-31","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"anulada":true},"F2":{"anulada":true},"F3":{"anulada":true},"F4":null,"F5":null,"F6":null}},{"id":44,"desc":"FOTO2 MARÇO Terraço","comp":0,"alt":0,"area":83.84,"dataAuto":"2026-03-31","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"anulada":true},"F2":{"anulada":true},"F3":null,"F4":null,"F5":null,"F6":null}},{"id":45,"desc":"FOTO2 MARÇO Janela central","comp":0,"alt":0,"area":8.7,"dataAuto":"2026-03-31","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"anulada":true},"F2":{"anulada":true},"F3":null,"F4":null,"F5":null,"F6":null}},{"id":46,"desc":"FOTO2 MARÇO Fachada lateral 2","comp":0,"alt":0,"area":6.89,"dataAuto":"2026-03-31","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"anulada":true},"F2":{"anulada":true},"F3":null,"F4":null,"F5":null,"F6":null}},{"id":47,"desc":"FOTO2 MARÇO Interior 1","comp":0,"alt":0,"area":4.59,"dataAuto":"2026-03-31","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"anulada":true},"F2":{"anulada":true},"F3":null,"F4":null,"F5":null,"F6":null}},{"id":48,"desc":"FOTO2 MARÇO Interior 2","comp":0,"alt":0,"area":4.86,"dataAuto":"2026-03-31","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"anulada":true},"F2":{"anulada":true},"F3":null,"F4":null,"F5":null,"F6":null}},{"id":49,"desc":"FOTO1 ABRIL F. C/P. Tierra INT. (Compl.)","comp":0,"alt":0,"area":221.79,"dataAuto":"2026-04-30","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"mes":"2026-05","preco":5.43,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2026-05","preco":4.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"mes":"2026-05","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F4":null,"F5":null,"F6":null}},{"id":50,"desc":"FOTO4 ABRIL C/ C. y T. de Segovia","comp":0,"alt":0,"area":144.62,"dataAuto":"2026-04-30","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"mes":"2026-05","preco":5.43,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2026-05","preco":4.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":null,"F4":null,"F5":null,"F6":null}},{"id":51,"desc":"FOTO6 ABRIL C/ Procuradores (Ter. SUP.)","comp":0,"alt":0,"area":179.38,"dataAuto":"2026-04-30","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"mes":"2026-05","preco":5.43,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2026-05","preco":4.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":null,"F4":null,"F5":null,"F6":null}},{"id":52,"desc":"FOTO5 ABRIL C/ P. Tierra (desde J. Dil.)","comp":0,"alt":0,"area":745.26,"dataAuto":"2026-05-30","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"mes":"2026-05","preco":5.43,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2026-05","preco":4.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":null,"F4":null,"F5":null,"F6":null}},{"id":53,"desc":"FOTO2 ABRIL C/ C. y T. Seg. (J. Dil.)","comp":0,"alt":0,"area":460.22,"dataAuto":"2026-05-30","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"mes":"2026-05","preco":5.43,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":null,"F3":null,"F4":null,"F5":null,"F6":null}},{"id":54,"desc":"FOTO3 ABRIL C/ C. y T. Seg. (Ter. SUP.)","comp":0,"alt":0,"area":140.11,"dataAuto":"2026-05-30","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"mes":"2026-05","preco":5.43,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2026-05","preco":4.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":null,"F4":null,"F5":null,"F6":null}},{"id":55,"desc":"FOTO1 JUNHO FACHADA","comp":0,"alt":0,"area":298.31,"dataAuto":"2026-06-30","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"mes":"2026-06","preco":7,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":null,"F3":null,"F4":null,"F5":null,"F6":null}},{"id":56,"desc":"FOTO1 JUNHO TUNEL","comp":0,"alt":0,"area":76.7,"dataAuto":"2026-06-30","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"mes":"2026-06","preco":7,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":null,"F3":null,"F4":null,"F5":null,"F6":null}},{"id":57,"desc":"FOTO2 JUNHO TETOS1 LATERAL","comp":0,"alt":0,"area":0.81,"dataAuto":"2026-06-30","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"mes":"2026-06","preco":7,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":null,"F3":null,"F4":null,"F5":null,"F6":null}},{"id":58,"desc":"FOTO2 JUNHO TETOS1 FRENTE","comp":0,"alt":0,"area":3.38,"dataAuto":"2026-06-30","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"mes":"2026-06","preco":7,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":null,"F3":null,"F4":null,"F5":null,"F6":null}},{"id":59,"desc":"FOTO2 JUNHO TETOS1 TETO","comp":0,"alt":0,"area":13.5,"dataAuto":"2026-06-30","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"mes":"2026-06","preco":7,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":null,"F3":null,"F4":null,"F5":null,"F6":null}},{"id":60,"desc":"FOTO2 JUNHO TETOS2+3 LATERAL","comp":0,"alt":0,"area":1.44,"dataAuto":"2026-06-30","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"mes":"2026-06","preco":7,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":null,"F3":null,"F4":null,"F5":null,"F6":null}},{"id":61,"desc":"FOTO2 JUNHO TETOS2+3 FRENTE","comp":0,"alt":0,"area":6,"dataAuto":"2026-06-30","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"mes":"2026-06","preco":7,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":null,"F3":null,"F4":null,"F5":null,"F6":null}},{"id":62,"desc":"FOTO2 JUNHO TETOS2+3 TETO","comp":0,"alt":0,"area":27,"dataAuto":"2026-06-30","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"mes":"2026-06","preco":7,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":null,"F3":null,"F4":null,"F5":null,"F6":null}},{"id":63,"desc":"FOTO2 JUNHO TETOS4 LATERAL","comp":0,"alt":0,"area":1.62,"dataAuto":"2026-06-30","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"mes":"2026-06","preco":7,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":null,"F3":null,"F4":null,"F5":null,"F6":null}},{"id":64,"desc":"FOTO2 JUNHO TETOS4 FRENTE","comp":0,"alt":0,"area":6.93,"dataAuto":"2026-06-30","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"mes":"2026-06","preco":7,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":null,"F3":null,"F4":null,"F5":null,"F6":null}},{"id":65,"desc":"FOTO2 JUNHO TETOS4 TETO","comp":0,"alt":0,"area":27.72,"dataAuto":"2026-06-30","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"mes":"2026-06","preco":7,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":null,"F3":null,"F4":null,"F5":null,"F6":null}},{"id":66,"desc":"FOTO2 JUNHO TETOS5+6 LATERAL","comp":0,"alt":0,"area":2.88,"dataAuto":"2026-06-30","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"mes":"2026-06","preco":7,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":null,"F3":null,"F4":null,"F5":null,"F6":null}},{"id":67,"desc":"FOTO2 JUNHO TETOS5+6 FRENTE","comp":0,"alt":0,"area":12.32,"dataAuto":"2026-06-30","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"mes":"2026-06","preco":7,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":null,"F3":null,"F4":null,"F5":null,"F6":null}},{"id":68,"desc":"FOTO2 JUNHO TETOS5+6 TETO","comp":0,"alt":0,"area":55.44,"dataAuto":"2026-06-30","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"mes":"2026-06","preco":7,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":null,"F3":null,"F4":null,"F5":null,"F6":null}},{"id":69,"desc":"FOTO2 JUNHO FACHADA COMPLETA","comp":0,"alt":0,"area":373.54,"dataAuto":"2026-06-30","precos":{"F1":7,"F2":6,"F3":4.5},"fases":{"F1":{"mes":"2026-06","preco":7,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":null,"F3":null,"F4":null,"F5":null,"F6":null}}],"ausencias":[],"extras":[],"nextZoneId":71,"nextExtraId":1}},{"id":"obra1781632576049","nome":"SEGOVIA_2_RESIDENCIA_EST","db":{"config":{"obra":"SEGOVIA_2_RESIDENCIA_EST","cliente":"GRUPO GARCIA S.L.","fases":[{"id":"F1","nome":"EPS","cor":"#e8650d"},{"id":"F2","nome":"BARRAMENTO","cor":"#1f7a4d"},{"id":"F3","nome":"PINTURA","cor":"#3d5a99"},{"id":"F4","nome":"FAZER JUNTAS","cor":"#9b287b","ativa":false},{"id":"F5","nome":"TINTAR","cor":"#0e7c7b","ativa":false},{"id":"F6","nome":"CAPOTO","cor":"#b8860b","ativa":false}],"precos":{"F1":7,"F2":6,"F3":4.5,"F4":5,"F5":5,"F6":15,"HORAS":10}},"workers":[{"nome":"MAIKER"},{"nome":"ANTONIO"},{"nome":"NEIVANDER"},{"nome":"LIONALDO"},{"nome":"LEOMILDO"}],"roles":{"2026-06":{"F1":"CHEFE","F2":"SERVENTE","F3":"OFICIAL","MAIKER":"CHEFE","ANTONIO":"OFICIAL","NEIVANDER":"OFICIAL","LIONALDO":"OFICIAL","LEOMILDO":"OFICIAL"}},"zones":[{"desc":"Fachada lateral 1","comp":120,"alt":1,"area":120,"dataAuto":"2026-06-11","fases":{"F1":{"mes":"2026-06","preco":7,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":null,"F3":null},"id":2,"precos":{"F1":7,"F2":6,"F3":4.5,"F4":5,"F5":5,"F6":15,"HORAS":10}}],"ausencias":[],"extras":[],"nextZoneId":3,"nextExtraId":2}},{"id":"obra1781800099368","nome":"SEGOVIA_0_ALBERTO","db":{"config":{"obra":"SEGOVIA_0_ALBERTO","cliente":"ALBERTO","fases":[{"id":"F1","nome":"EPS","cor":"#E8650D"},{"id":"F2","nome":"BARRAMENTO","cor":"#1F7A4D"},{"id":"F3","nome":"PINTURA","cor":"#3D5A99"},{"id":"F4","nome":"FASE 4","cor":"#9B287B","ativa":false},{"id":"F5","nome":"FASE 5","cor":"#0E7C7B","ativa":false},{"id":"F6","nome":"FASE 6","cor":"#B8860B","ativa":false}],"precos":{"F1":6.5,"F2":5.5,"F3":4,"HORAS":12}},"workers":[{"nome":"MAIKER"},{"nome":"ANTONIO"},{"nome":"NEIVANDER"},{"nome":"LIONALDO"},{"nome":"LEOMILDO"}],"roles":{"2025-12":{"MAIKER":"CHEFE","ANTONIO":"OFICIAL","NEIVANDER":"OFICIAL","LIONALDO":"OFICIAL","LEOMILDO":"OFICIAL"},"2026-04":{"MAIKER":"CHEFE","ANTONIO":"OFICIAL","NEIVANDER":"OFICIAL","LIONALDO":"OFICIAL","LEOMILDO":"OFICIAL"},"2026-05":{"MAIKER":"CHEFE","ANTONIO":"OFICIAL","NEIVANDER":"OFICIAL","LIONALDO":"OFICIAL","LEOMILDO":"OFICIAL"},"2025-11":{"MAIKER":"CHEFE","ANTONIO":"OFICIAL","NEIVANDER":"OFICIAL","LIONALDO":"OFICIAL","LEOMILDO":"OFICIAL"},"2025-10":{"MAIKER":"CHEFE","ANTONIO":"OFICIAL","NEIVANDER":"OFICIAL","LIONALDO":"OFICIAL","LEOMILDO":"SERVENTE"},"2026-02":{"MAIKER":"CHEFE","ANTONIO":"OFICIAL","NEIVANDER":"OFICIAL","LIONALDO":"OFICIAL","LEOMILDO":"OFICIAL"},"2026-06":{"MAIKER":"CHEFE","ANTONIO":"OFICIAL","NEIVANDER":"OFICIAL","LIONALDO":"OFICIAL","LEOMILDO":"OFICIAL"},"2026-03":{"MAIKER":"CHEFE","ANTONIO":"OFICIAL","NEIVANDER":"OFICIAL","LIONALDO":"OFICIAL","LEOMILDO":"OFICIAL"},"2026-01":{"MAIKER":"CHEFE","ANTONIO":"OFICIAL","NEIVANDER":"OFICIAL","LIONALDO":"OFICIAL","LEOMILDO":"OFICIAL"}},"zones":[{"id":1,"desc":"FACHADA LATERAL 1","comp":24.75,"alt":9.38,"area":232.16,"dataAuto":"2025-10-31","anulada":false,"fases":{"F1":{"mes":"2025-10","preco":6.5,"equipa":["MAIKER","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2025-10","preco":5.5,"equipa":["MAIKER","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"mes":"2026-03","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":2,"desc":"FACHADA LATERAL 1","comp":14.45,"alt":2.88,"area":41.62,"dataAuto":"2025-10-31","anulada":false,"fases":{"F1":{"mes":"2025-10","preco":6.5,"equipa":["MAIKER","NEIVANDER","LIONALDO"]},"F2":{"mes":"2025-10","preco":5.5,"equipa":["MAIKER","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"anulada":true,"anterior":{"mes":"2026-05","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":3,"desc":"FACHADA LATERAL 1 S","comp":14.45,"alt":9.5,"area":137.28,"dataAuto":"2025-10-31","anulada":false,"fases":{"F1":{"mes":"2025-10","preco":6.5,"equipa":["MAIKER","NEIVANDER","LIONALDO"]},"F2":{"mes":"2025-10","preco":5.5,"equipa":["MAIKER","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"mes":"2026-03","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":4,"desc":"FACHADA LATERAL 1 TETO","comp":14.75,"alt":0.77,"area":11.36,"dataAuto":"2025-10-31","anulada":false,"fases":{"F1":{"mes":"2025-10","preco":6.5,"equipa":["MAIKER","NEIVANDER","LIONALDO"]},"F2":{"mes":"2025-10","preco":5.5,"equipa":["MAIKER","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"mes":"2026-03","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":5,"desc":"FACHADA VENTANAS/TERRAÇO","comp":1,"alt":53.2,"area":53.2,"dataAuto":"2025-11-30","anulada":false,"fases":{"F1":{"mes":"2025-11","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2025-11","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"anulada":true,"anterior":{"mes":"2026-05","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":6,"desc":"FACHADA VENTANAS1","comp":1,"alt":209.54,"area":209.54,"dataAuto":"2025-11-30","anulada":false,"fases":{"F1":{"mes":"2025-11","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2025-11","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"anulada":true,"anterior":{"mes":"2026-05","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":7,"desc":"FACHADA LATERAL TETOS1","comp":1,"alt":125,"area":125,"dataAuto":"2025-11-30","anulada":false,"fases":{"F1":{"mes":"2025-11","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2025-11","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"anulada":true,"anterior":{"mes":"2026-05","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":8,"desc":"FACHADA LATERAL TETOS2","comp":1,"alt":125,"area":125,"dataAuto":"2025-11-30","anulada":false,"fases":{"F1":{"mes":"2025-11","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2025-12","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"anulada":true,"anterior":{"mes":"2026-05","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":9,"desc":"FACHADA BIBLIOTECA","comp":1,"alt":477.65,"area":477.65,"dataAuto":"2025-11-30","anulada":false,"fases":{"F1":{"mes":"2025-11","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2025-11","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"mes":"2026-04","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":10,"desc":"TERRAÇO BILIOTECA + LATERAL","comp":34.05,"alt":3.4,"area":115.77,"dataAuto":"2025-12-31","anulada":false,"fases":{"F1":{"mes":"2025-12","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2025-12","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"mes":"2026-04","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":11,"desc":"FACHADA TERRAÇO LATERAL","comp":16.78,"alt":3.4,"area":57.05,"dataAuto":"2025-12-31","anulada":false,"fases":{"F1":{"mes":"2025-12","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2025-12","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"anulada":true,"anterior":{"mes":"2026-05","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":12,"desc":"FACHADA LATERAL 2","comp":16.68,"alt":9.4,"area":156.79,"dataAuto":"2025-12-31","anulada":false,"fases":{"F1":{"mes":"2025-12","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2025-12","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"mes":"2026-03","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":13,"desc":"FACHADA LATERAL INTERIOR","comp":16.9,"alt":13.1,"area":221.39,"dataAuto":"2025-12-31","anulada":false,"fases":{"F1":{"mes":"2025-12","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2025-12","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"mes":"2026-03","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":14,"desc":"FACHADA LATERAL INTERIOR TETO","comp":7.75,"alt":1.85,"area":43.01,"dataAuto":"2025-12-31","anulada":false,"fases":{"F1":{"mes":"2025-12","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2025-12","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"mes":"2026-03","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":15,"desc":"FACHADA LATERAL INTERIOR TETO","comp":6.4,"alt":1.85,"area":35.52,"dataAuto":"2025-12-31","anulada":false,"fases":{"F1":{"mes":"2025-12","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2025-12","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"mes":"2026-03","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":16,"desc":"FACHADA LATERAL INTERIOR FUNDO","comp":1.8,"alt":4.4,"area":15.84,"dataAuto":"2025-12-31","anulada":false,"fases":{"F1":{"mes":"2025-12","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2025-12","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"anulada":true,"anterior":{"mes":"2026-05","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":17,"desc":"FOTO1 FEVEREIRO 1","comp":25.96,"alt":10.8,"area":280.37,"dataAuto":"2026-02-28","anulada":false,"fases":{"F1":{"mes":"2026-02","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2026-02","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"mes":"2026-04","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":18,"desc":"FOTO1 FEVEREIRO 2","comp":1.77,"alt":0.87,"area":1.54,"dataAuto":"2026-02-28","anulada":false,"fases":{"F1":{"mes":"2026-02","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2026-02","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"mes":"2026-03","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":19,"desc":"FOTO1 FEVEREIRO 3","comp":0.87,"alt":12.65,"area":11.01,"dataAuto":"2026-02-28","anulada":false,"fases":{"F1":{"mes":"2026-02","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2026-02","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"mes":"2026-03","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":20,"desc":"FOTO1 FEVEREIRO 4","comp":0.87,"alt":12.65,"area":11.01,"dataAuto":"2026-02-28","anulada":false,"fases":{"F1":{"mes":"2026-02","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2026-02","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"mes":"2026-03","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":21,"desc":"FOTO1 FEVEREIRO 5","comp":0.87,"alt":12.65,"area":11.01,"dataAuto":"2026-02-28","anulada":false,"fases":{"F1":{"mes":"2026-02","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2026-02","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"mes":"2026-04","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":22,"desc":"FOTO2 FEVEREIRO 1","comp":1.38,"alt":1.77,"area":2.44,"dataAuto":"2026-02-28","anulada":false,"fases":{"F1":{"mes":"2026-02","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2026-02","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"mes":"2026-03","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":23,"desc":"FOTO2 FEVEREIRO 2","comp":11.75,"alt":7.8,"area":91.65,"dataAuto":"2026-02-28","anulada":false,"fases":{"F1":{"mes":"2026-02","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2026-02","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"mes":"2026-03","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":24,"desc":"FOTO2 FEVEREIRO 3","comp":6.5,"alt":6.6,"area":42.9,"dataAuto":"2026-02-28","anulada":false,"fases":{"F1":{"mes":"2026-02","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2026-02","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"mes":"2026-03","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":25,"desc":"FOTO2 FEVEREIRO 4","comp":0.8,"alt":7.8,"area":6.24,"dataAuto":"2026-02-28","anulada":false,"fases":{"F1":{"mes":"2026-02","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2026-02","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"mes":"2026-03","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":26,"desc":"FOTO2 FEVEREIRO 5","comp":4.15,"alt":12.1,"area":50.22,"dataAuto":"2026-02-28","anulada":false,"fases":{"F1":{"mes":"2026-02","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2026-02","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"mes":"2026-03","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":27,"desc":"FOTO2 FEVEREIRO 6","comp":4.15,"alt":12.2,"area":50.63,"dataAuto":"2026-02-28","anulada":false,"fases":{"F1":{"mes":"2026-02","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2026-02","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"mes":"2026-03","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":28,"desc":"FOTO2 FEVEREIRO 7","comp":4.15,"alt":12.2,"area":50.63,"dataAuto":"2026-02-28","anulada":false,"fases":{"F1":{"mes":"2026-02","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2026-02","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"mes":"2026-03","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":29,"desc":"FOTO2 FEVEREIRO 8","comp":16.68,"alt":7.8,"area":130.1,"dataAuto":"2026-02-28","anulada":false,"fases":{"F1":{"mes":"2026-02","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2026-02","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"anulada":true,"anterior":{"mes":"2026-05","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":30,"desc":"FOTO3 FEVEREIRO 1","comp":1.95,"alt":6.1,"area":11.9,"dataAuto":"2026-02-28","anulada":false,"fases":{"F1":{"mes":"2026-02","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2026-02","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"mes":"2026-04","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":31,"desc":"FOTO3 FEVEREIRO 2","comp":1.95,"alt":4.2,"area":8.19,"dataAuto":"2026-02-28","anulada":false,"fases":{"F1":{"mes":"2026-02","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2026-02","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"mes":"2026-04","preco":3.5,"equipa":["MAIKER","ANTONIO","LIONALDO","LEOMILDO"]}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":32,"desc":"FOTO3 FEVEREIRO 3","comp":1.95,"alt":4.2,"area":8.19,"dataAuto":"2026-02-28","anulada":false,"fases":{"F1":{"mes":"2026-02","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2026-02","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"mes":"2026-04","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":33,"desc":"FOTO3 FEVEREIRO 4","comp":6.1,"alt":17.8,"area":108.58,"dataAuto":"2026-02-28","anulada":false,"fases":{"F1":{"mes":"2026-02","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2026-02","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"mes":"2026-04","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":34,"desc":"FOTO4 FEVEREIRO 1","comp":3.7,"alt":22.1,"area":81.77,"dataAuto":"2026-02-28","anulada":false,"fases":{"F1":{"mes":"2026-02","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2026-02","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"mes":"2026-03","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":35,"desc":"FOTO4 FEVEREIRO 2","comp":3.7,"alt":15.75,"area":58.28,"dataAuto":"2026-02-28","anulada":false,"fases":{"F1":{"mes":"2026-02","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2026-02","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"mes":"2026-03","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":36,"desc":"FOTO4 FEVEREIRO 3","comp":2.1,"alt":11,"area":23.1,"dataAuto":"2026-02-28","anulada":false,"fases":{"F1":{"mes":"2026-02","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2026-02","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"mes":"2026-04","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":37,"desc":"FOTO1 MARÇO","comp":15.65,"alt":28,"area":438.2,"dataAuto":"2026-03-31","anulada":false,"fases":{"F1":{"mes":"2026-03","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2026-03","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"mes":"2026-04","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":38,"desc":"FOTO1 MARÇO","comp":8.3,"alt":12.6,"area":104.58,"dataAuto":"2026-03-31","anulada":false,"fases":{"F1":{"mes":"2026-03","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2026-04","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"anulada":true,"anterior":{"mes":"2026-05","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":39,"desc":"FOTO1 MARÇO","comp":3.55,"alt":11,"area":39.05,"dataAuto":"2026-03-31","anulada":false,"fases":{"F1":{"mes":"2026-03","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2026-03","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"anulada":true,"anterior":{"mes":"2026-05","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":40,"desc":"FOTO2 MARÇO","comp":1.7,"alt":3.45,"area":5.87,"dataAuto":"2026-03-31","anulada":false,"fases":{"F1":{"mes":"2026-03","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2026-03","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"mes":"2026-04","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":41,"desc":"FOTO2 MARÇO","comp":3,"alt":3.45,"area":10.35,"dataAuto":"2026-03-31","anulada":false,"fases":{"F1":{"mes":"2026-03","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2026-03","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"mes":"2026-04","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":42,"desc":"FOTO2 MARÇO","comp":24.3,"alt":3.45,"area":83.84,"dataAuto":"2026-03-31","anulada":false,"fases":{"F1":{"mes":"2026-03","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2026-03","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"anulada":true,"anterior":null}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":43,"desc":"FOTO2 MARÇO","comp":1,"alt":8.7,"area":8.7,"dataAuto":"2026-03-31","anulada":false,"fases":{"F1":{"mes":"2026-03","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2026-03","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"anulada":true,"anterior":null}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":44,"desc":"FOTO2 MARÇO","comp":2.7,"alt":2.55,"area":6.89,"dataAuto":"2026-03-31","anulada":false,"fases":{"F1":{"mes":"2026-03","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2026-03","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"anulada":true,"anterior":null}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":45,"desc":"FOTO2 MARÇO","comp":1.8,"alt":2.55,"area":4.59,"dataAuto":"2026-03-31","anulada":false,"fases":{"F1":{"mes":"2026-03","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2026-03","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"anulada":true,"anterior":null}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":46,"desc":"FOTO2 MARÇO","comp":2.7,"alt":1.8,"area":4.86,"dataAuto":"2026-03-31","anulada":false,"fases":{"F1":{"mes":"2026-03","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2026-03","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"anulada":true,"anterior":null}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"id":47,"desc":"FOTO1 ABRIL","comp":1,"alt":221.79,"area":221.79,"dataAuto":"2026-04-30","anulada":false,"fases":{"F1":{"mes":"2026-04","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"anulada":true,"anterior":{"mes":"2026-05","preco":5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"F3":{"anulada":true,"anterior":{"mes":"2026-05","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}}},"precos":{"F1":6,"F2":5,"F3":3.5}},{"desc":"FOTO 4 ABRIL","comp":144.62,"alt":1,"area":144.62,"dataAuto":"2026-04-30","fases":{"F1":{"mes":"2026-04","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"anulada":true,"anterior":{"mes":"2026-05","preco":5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"F3":{"anulada":true,"anterior":null}},"id":53,"precos":{"F1":6,"F2":5,"F3":3.5,"HORAS":12}},{"desc":"FOTO 6 ABRIL","comp":1,"alt":179.38,"area":179.38,"dataAuto":"2026-04-30","fases":{"F1":{"mes":"2026-04","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"anulada":true,"anterior":{"mes":"2026-05","preco":5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"F3":{"anulada":true,"anterior":null}},"id":54,"precos":{"F1":6,"F2":5,"F3":3.5,"HORAS":12}},{"desc":"NAO AUTO","comp":0.1,"alt":0.1,"area":0.01,"dataAuto":"2026-01-31","fases":{"F1":{"mes":"2026-01","preco":6,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2026-01","preco":5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"mes":"2026-01","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"id":55,"precos":{"F1":6,"F2":5,"F3":3.5,"HORAS":12}},{"desc":"F qC y T . SEGOVIA (INT)","comp":1,"alt":138.62,"area":138.62,"dataAuto":"2025-12-31","fases":{"F1":{"mes":"2025-12","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2025-12","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"mes":"2026-04","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"id":56,"precos":{"F1":6,"F2":5,"F3":3.5,"HORAS":12}},{"desc":"TEO INT. TERRAZA","comp":37.57,"alt":1,"area":37.57,"dataAuto":"2025-12-31","fases":{"F1":{"mes":"2025-12","preco":6.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F2":{"mes":"2025-12","preco":5.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]},"F3":{"mes":"2026-04","preco":3.5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"id":57,"precos":{"F1":6,"F2":5,"F3":3.5,"HORAS":12}},{"desc":"FOTO 5 ABRIL","comp":745.26,"alt":1,"area":745.26,"dataAuto":"2026-04-30","fases":{"F1":{"anulada":true,"anterior":{"mes":"2026-05","preco":6,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"F2":{"anulada":true,"anterior":{"mes":"2026-05","preco":5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"F3":{"anulada":true,"anterior":null}},"id":58,"precos":{"F1":6,"F2":5,"F3":3.5,"HORAS":12}},{"desc":"FOTO 2 ABRIL","comp":460.22,"alt":1,"area":460.22,"dataAuto":"2026-04-30","fases":{"F1":{"anulada":true,"anterior":{"mes":"2026-05","preco":6,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"F2":{"anulada":true,"anterior":null},"F3":{"anulada":true,"anterior":null}},"id":59,"precos":{"F1":6,"F2":5,"F3":3.5,"HORAS":12}},{"desc":"FOTO 3 ABRIL","comp":140.41,"alt":1,"area":140.41,"dataAuto":"2026-04-30","fases":{"F1":{"anulada":true,"anterior":{"mes":"2026-05","preco":6,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"F2":{"anulada":true,"anterior":{"mes":"2026-05","preco":5,"equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}},"F3":{"anulada":true,"anterior":null}},"id":60,"precos":{"F1":6,"F2":5,"F3":3.5,"HORAS":12}}],"ausencias":[],"extras":[{"id":1,"desc":"HORAS OUTUBRO","area":8,"preco":12,"mes":"2025-10","equipa":["MAIKER","NEIVANDER","LIONALDO","LEOMILDO"]},{"id":2,"desc":"HORAS MARÇO","area":27,"preco":12,"mes":"2026-03","equipa":["MAIKER","ANTONIO","NEIVANDER","LIONALDO","LEOMILDO"]}],"nextZoneId":62,"nextExtraId":3}}],"ativa":"segovia1"};
+
+function storeInicial(){
+  // arranca com os dados reais embutidos (obras, fases, preços, autos e mapa)
+  try{
+    const d=JSON.parse(JSON.stringify(DADOS_INICIAIS));
+    (d.obras||[]).forEach(o=>{ const db=o.db;
+      if(!db.roles)db.roles={}; if(!db.payments)db.payments=[]; if(!db.extras)db.extras=[];
+      if(!db.prodReg)db.prodReg={}; if(!db.histCfg)db.histCfg=[];
+      if(db.nextExtraId==null)db.nextExtraId=1; if(db.nextPayId==null)db.nextPayId=1;
+      if(!db.ausencias)db.ausencias=[]; if(!db.zones)db.zones=[];
+    });
+    if(!d.ativa||!d.obras.some(o=>o.id===d.ativa)) d.ativa=d.obras[0].id;
+    d.ultimoBackup=null;
+    return d;
+  }catch(e){
+    return { obras: SEED.obras.map(o=>({id:o.id,nome:o.nome,db:novaObraDB(o.nome)})), ativa: SEED.obras[0].id, ultimoBackup:null };
+  }
+}
+
+// estado completamente vazio (sem obras) — usado pelo "Limpar esta app"
+function storeVazio(){ return { obras:[], ativa:null, equipaGlobal:[], faturas:[], ultimoBackup:null }; }
+
+let STORE = storeInicial();
+let tab='auto';
+let chefe = '';            // nome do chefe de grupo (para o registo)
+let editZona=null;         // 'new' ou id
+let autoMesAberto={};      // mk -> true/false (true = aberto); por defeito aberto
+let mapSel=null;           // seleção atual no mapa: 'fase:F1' | 'ferias' | 'faltas' | 'apagar'
+let mesesExtra=[];         // meses adicionados manualmente ao mapa (ex: férias futuras)
+let resumoScope='obra';    // 'obra' | 'todas'
+let fatFiltro='todas';     // filtro da aba faturas: 'todas' | 'paga' | 'pendente'
+let importFonte=null;      // obras do ficheiro colado, à espera de escolha
+
+/* ---------- carregar/guardar localmente ---------- */
+function loadLocal(){
+  try{ const v=localStorage.getItem(KEY_LOCAL); if(v){ const o=JSON.parse(v); if(o.STORE) STORE=o.STORE; if(o.chefe) chefe=o.chefe; } }catch(e){}
+}
+function saveLocal(){
+  try{ localStorage.setItem(KEY_LOCAL, JSON.stringify({STORE, chefe})); }catch(e){}
+}
+
+/* ---------- helpers de modelo ---------- */
+function temObras(){ return STORE.obras && STORE.obras.length>0; }
+function obraAtiva(){ return STORE.obras.find(o=>o.id===STORE.ativa) || STORE.obras[0] || null; }
+function DB(){ const o=obraAtiva(); return o?o.db:{config:{fases:[],precos:{}},workers:[],zones:[],ausencias:[],extras:[],roles:{}}; }
+// garante fases só quando a obra não traz nenhuma (não polui obras que já têm a sua config de fases)
+function garantirFases(db){
+  if(!db.config) db.config={};
+  if(!Array.isArray(db.config.fases)) db.config.fases=[];
+  if(!db.config.precos) db.config.precos={};
+  // se a obra já tem fases definidas (vieram do ficheiro ou da semente), respeita-as tal como estão
+  if(db.config.fases.length) return;
+  // obra sem fases: aplica as fases padrão (F1-F6, com F4-F6 inativas), iguais à app Funcionários
+  db.config.fases = JSON.parse(JSON.stringify(SEED.fases));
+  SEED.fases.forEach(sf=>{ if(db.config.precos[sf.id]==null && SEED.precos[sf.id]!=null) db.config.precos[sf.id]=SEED.precos[sf.id]; });
+}
+function garantirFasesTodas(){ STORE.obras.forEach(o=>garantirFases(o.db)); }
+function fasesObra(){ const f=DB().config.fases||[]; return f.filter(x=>x.ativa!==false); }
+function faseNome(id){ const f=(DB().config.fases||[]).find(x=>x.id===id); return f?f.nome:id; }
+function faseCor(id){ const f=(DB().config.fases||[]).find(x=>x.id===id); return f?f.cor:'#777'; }
+function faseLetra(id){ const FS=fasesObra(); const i=FS.findIndex(f=>f.id===id); return i>=0?String(i+1):(id?id.replace(/\D/g,''):'?'); }
+function precoFasePadrao(id){ return (DB().config.precos&&DB().config.precos[id]!=null)?DB().config.precos[id]:0; }
+
+// TODOS os funcionários de todas as obras (lista global)
+// ===== EQUIPA GLOBAL (única para todas as obras) =====
+// inicializa STORE.equipaGlobal a partir dos funcionários/cargos existentes (1ª vez)
+function garantirEquipaGlobal(){
+  if(!Array.isArray(STORE.equipaGlobal)) STORE.equipaGlobal=[];
+  if(STORE.equipaGlobal.length) return;
+  if(!temObras()) return; // app vazia: não semear nada
+  const mapa={};  // nome -> cargo
+  STORE.obras.forEach(o=>{
+    (o.db.workers||[]).forEach(w=>{ if(!(w.nome in mapa)) mapa[w.nome]=''; });
+    const r=o.db.roles||{}; const meses=Object.keys(r).sort();
+    Object.keys(mapa).forEach(nome=>{
+      if(mapa[nome]) return;
+      for(let i=meses.length-1;i>=0;i--){ const v=r[meses[i]]&&r[meses[i]][nome]; if(v){ mapa[nome]=v; break; } }
+    });
+  });
+  STORE.equipaGlobal = Object.keys(mapa).sort().map(nome=>({nome, cargo:mapa[nome]||'OFICIAL'}));
+}
+function todosFuncionarios(){ garantirEquipaGlobal(); return STORE.equipaGlobal.map(w=>w.nome).sort(); }
+// todos estão em todas as obras: a equipa da obra = equipa global
+function equipaObra(){ garantirEquipaGlobal(); return STORE.equipaGlobal.map(w=>w.nome).sort(); }
+function estaNaObra(nome){ return true; }
+function cargoFunc(nome){ garantirEquipaGlobal(); const w=STORE.equipaGlobal.find(x=>x.nome===nome); return w?w.cargo:''; }
+function setCargo(nome, cargo){
+  garantirEquipaGlobal();
+  const w=STORE.equipaGlobal.find(x=>x.nome===nome);
+  if(w) w.cargo=cargo; else STORE.equipaGlobal.push({nome,cargo});
+  STORE.equipaGlobal.sort((a,b)=>a.nome<b.nome?-1:1);
+  saveLocal();
+}
+function adicionarFuncionario(nome, cargo){
+  garantirEquipaGlobal();
+  if(!STORE.equipaGlobal.some(x=>x.nome===nome)){ STORE.equipaGlobal.push({nome,cargo:cargo||'OFICIAL'}); STORE.equipaGlobal.sort((a,b)=>a.nome<b.nome?-1:1); saveLocal(); }
+}
+function removerFuncionario(nome){
+  garantirEquipaGlobal();
+  STORE.equipaGlobal=STORE.equipaGlobal.filter(x=>x.nome!==nome); saveLocal();
+}
+// propaga a equipa global para workers+roles de cada obra (chamado antes de exportar/guardar)
+function sincronizarEquipaNasObras(){
+  garantirEquipaGlobal();
+  STORE.obras.forEach(o=>{
+    const db=o.db;
+    db.workers = STORE.equipaGlobal.map(w=>({nome:w.nome}));
+    if(!db.roles) db.roles={};
+    const meses=new Set(Object.keys(db.roles)); meses.add(mesAtual());
+    meses.forEach(m=>{ if(!db.roles[m]) db.roles[m]={}; STORE.equipaGlobal.forEach(w=>{ db.roles[m][w.nome]=w.cargo; }); });
+  });
+}
+
+function hojeISO(){ const d=new Date(),p=n=>String(n).padStart(2,'0'); return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate()); }
+function mesAtual(){ return hojeISO().slice(0,7); }
+function mesLbl(ym){ if(!ym) return '—'; const [a,m]=ym.split('-'); const M=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez']; return M[(+m)-1]+' '+a; }
+function mesCurto(ym){ const [a,m]=ym.split('-'); return ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'][(+m)-1]+'/'+a.slice(2); }
+function fmtN(n){ return (Math.round((+n||0)*100)/100).toLocaleString('pt-PT'); }
+function fmtEur(n){ return (Math.round((+n||0)*100)/100).toLocaleString('pt-PT',{minimumFractionDigits:2,maximumFractionDigits:2})+' €'; }
+// valor concluído de uma zona (fases com mês) e valor pendente (fases por fazer, não anuladas)
+function precoZona(z,fid){ return (z.precos&&z.precos[fid]!=null)?z.precos[fid]:precoFasePadrao(fid); }
+function zonaValor(z){ if(z.anulada) return 0; const FS=fasesObra(); return FS.reduce((a,f)=>{ const fd=z.fases&&z.fases[f.id]; return a+(fd&&fd.mes? (+z.area||0)*(fd.preco!=null?fd.preco:precoZona(z,f.id)) : 0); },0); }
+function zonaPendente(z){ if(z.anulada) return 0; const FS=fasesObra(); return FS.reduce((a,f)=>{ const fd=z.fases&&z.fases[f.id]; const porFazer = !fd || (!fd.mes && !fd.anulada); return a+(porFazer? (+z.area||0)*(precoZona(z,f.id)||0) : 0); },0); }
+function diasNoMes(ym){ const [y,m]=ym.split('-').map(Number); return new Date(y,m,0).getDate(); }
+
+// ===== Feriados de Segovia (Espanha) =====
+// Fixos nacionais/autonómicos que se repetem todos os anos (MM-DD)
+const FERIADOS_FIXOS={
+  '01-01':'Año Nuevo','01-06':'Reyes','04-23':'Día de Castilla y León','05-01':'Día del Trabajo',
+  '06-29':'San Pedro','08-15':'Asunción','10-12':'Fiesta Nacional','11-01':'Todos los Santos',
+  '10-25':'San Frutos','12-06':'Constitución','12-08':'Inmaculada','12-25':'Navidad'
+};
+// Específicos por ano (datas móveis: Semana Santa, e traslados de fim-de-semana)
+const FERIADOS_ANO={
+  '2026':{
+    '2026-01-01':'Año Nuevo','2026-01-06':'Reyes','2026-04-02':'Jueves Santo','2026-04-03':'Viernes Santo',
+    '2026-04-23':'Día de Castilla y León','2026-05-01':'Día del Trabajo','2026-06-29':'San Pedro',
+    '2026-08-15':'Asunción','2026-10-12':'Fiesta Nacional','2026-11-02':'San Frutos (traslado)',
+    '2026-11-09':'Todos los Santos (traslado)','2026-12-08':'Inmaculada','2026-12-14':'Constitución (traslado)','2026-12-25':'Navidad'
+  },
+  '2025':{
+    '2025-01-01':'Año Nuevo','2025-01-06':'Reyes','2025-04-17':'Jueves Santo','2025-04-18':'Viernes Santo',
+    '2025-04-23':'Día de Castilla y León','2025-05-01':'Día del Trabajo','2025-06-29':'San Pedro',
+    '2025-08-15':'Asunción','2025-10-12':'Fiesta Nacional','2025-10-25':'San Frutos','2025-11-01':'Todos los Santos',
+    '2025-12-06':'Constitución','2025-12-08':'Inmaculada','2025-12-25':'Navidad'
+  }
+};
+function feriadoNome(ymd){
+  const ano=ymd.slice(0,4);
+  if(FERIADOS_ANO[ano]) return FERIADOS_ANO[ano][ymd]||null;   // ano com lista exata
+  return FERIADOS_FIXOS[ymd.slice(5)]||null;                   // fallback: fixos que se repetem
+}
+function ehFeriado(ymd){ return !!feriadoNome(ymd); }
+
+function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),2200); }
+function abrirFotoGrande(src){
+  const ov=document.createElement('div');
+  ov.style.cssText='position:fixed;inset:0;background:rgba(10,12,14,.92);z-index:500;display:flex;align-items:center;justify-content:center;padding:16px';
+  ov.innerHTML=`<img src="${src}" style="max-width:100%;max-height:100%;border-radius:8px"><button style="position:absolute;top:14px;right:16px;background:#fff;border:none;border-radius:50%;width:40px;height:40px;font-size:20px;font-weight:800">✕</button>`;
+  ov.onclick=()=>ov.remove();
+  document.body.appendChild(ov);
+}
+
+/* ============================ AUTO ============================ */
+function rAuto(){
+  const db=DB(); const FS=fasesObra();
+  if(editZona!==null) return rFormZona();
+
+  let h='';
+  if(!equipaObra().length){
+    h+=`<div class="banner warm">Esta obra ainda não tem equipa afeta. Toca em <b>👷 Equipa</b> (em cima) e marca quem trabalha aqui — depois podes lançar o auto.</div>`;
+  }
+  const zonas=(db.zones||[]).slice();
+  if(!zonas.length){
+    h+=`<div class="big"><div class="empty"><span class="emoji">📐</span>Ainda não lançaste nenhuma zona no auto.</div><button class="act" id="bNovaZonaTop" style="width:100%;padding:14px;font-size:15px">＋ Nova zona</button></div>`;
+    return h;
+  }
+
+  // agrupar por mês do auto
+  const grupos={}, ordem=[];
+  zonas.forEach(z=>{ const mk=(z.dataAuto||'').slice(0,7)||'sem'; if(!grupos[mk]){grupos[mk]=[];ordem.push(mk);} grupos[mk].push(z); });
+  ordem.sort((a,b)=>a<b?-1:a>b?1:0);
+
+  const aberto=(mk)=> autoMesAberto[mk]!==false; // default aberto
+  const algumFechado = ordem.some(mk=>!aberto(mk));
+
+  h+=`<div class="big">`;
+  h+=`<div class="bar" style="margin:0 0 10px;gap:6px">
+    <button class="act" id="bNovaZonaTop" style="flex:1 1 100%;padding:14px;font-size:15px">＋ Nova zona</button>
+    <button class="sec" id="bAutoToggleAll" style="font-size:12px">${algumFechado?'▼ Abrir meses':'▲ Fechar meses'}</button>
+    <span class="note" style="margin:0;flex:1">${ordem.length} ${ordem.length==1?'mês':'meses'} de auto · clica no mês para abrir/fechar</span>
+  </div>`;
+
+  h+=`<div class="scroll"><table><tr><th>Zona</th><th>Data auto</th><th class="n">m²</th>${FS.map(f=>`<th>${faseNome(f.id)}</th>`).join('')}<th></th></tr>`;
+
+  const chip=(z,f)=>{
+    const fd=z.fases&&z.fases[f.id];
+    if(fd&&fd.anulada) return `<button class="mini" data-toggleanul="${z.id}|${f.id}" title="Fase anulada — toca para reativar" style="color:var(--ink2);font-size:10.5px;text-decoration:line-through">anulada</button>`;
+    if(fd&&fd.mes) return `<span style="display:inline-flex;gap:2px;align-items:center"><span class="tagF" title="${(fd.equipa||[]).join(', ')}" style="background:${faseCor(f.id)}22;color:${faseCor(f.id)};font-weight:700;font-size:10px;padding:1px 6px;border-radius:4px">${fd.mes.slice(5)}/${fd.mes.slice(2,4)}</span><button class="mini" data-toggleanul="${z.id}|${f.id}" title="Anular esta fase concluída" style="font-size:10px;color:var(--ink2);padding:0 2px">✕</button></span>`;
+    return `<span style="display:inline-flex;gap:3px;align-items:center"><button class="mini" data-zedit="${z.id}" style="color:var(--verm);font-size:11px;font-weight:700">pend.</button><button class="mini" data-toggleanul="${z.id}|${f.id}" title="Anular esta fase (não se faz)" style="font-size:11px;color:var(--ink2)">✕</button></span>`;
+  };
+
+  let sA=0,nZonas=0;
+  ordem.forEach(mk=>{
+    const zs=grupos[mk];
+    let gA=0; zs.forEach(z=>{ gA+=z.anulada?0:(+z.area||0); });
+    // m² concluídos por fase
+    const gFase={}; FS.forEach(f=>gFase[f.id]=0);
+    zs.forEach(z=>{ if(z.anulada)return; FS.forEach(f=>{ const fd=z.fases&&z.fases[f.id]; if(fd&&!fd.anulada&&fd.mes) gFase[f.id]+=(+z.area||0); }); });
+    const fasesTxt=FS.filter(f=>gFase[f.id]>0.01).map(f=>`<span style="color:${faseCor(f.id)};font-weight:700">${faseNome(f.id)} ${fmtN(gFase[f.id])} m²</span>`).join(' · ');
+    // m² anulados por fase
+    const anFase={}; FS.forEach(f=>anFase[f.id]=0);
+    zs.forEach(z=>{ FS.forEach(f=>{ const fd=z.fases&&z.fases[f.id]; if(z.anulada || (fd&&fd.anulada)) anFase[f.id]+=(+z.area||0); }); });
+    const anulTxt=FS.filter(f=>anFase[f.id]>0.01).map(f=>`${faseNome(f.id)} ${fmtN(anFase[f.id])} m²`).join(' · ');
+
+    const fechado=!aberto(mk);
+    const lblMes = mk==='sem' ? 'Sem data de auto' : 'Auto '+mesLbl(mk);
+    const mesCompleto = zs.length>0 && zs.every(z=> z.anulada || FS.every(f=>{ const fd=z.fases&&z.fases[f.id]; return fd && (fd.anulada || fd.mes); }));
+    const bgMes = mesCompleto ? '#D6F0E2' : '#F0F7F3';
+
+    h+=`<tr class="gmes" data-gmes="${mk}" style="cursor:pointer;background:${bgMes}"><td colspan="${3+FS.length+1}" style="font-weight:800"><span style="display:inline-block;width:14px">${fechado?'▶':'▼'}</span>${mesCompleto?'<span style="color:var(--verde)">✓ </span>':''}${lblMes} <span style="font-weight:500;color:var(--ink2);font-size:12px">· ${zs.length} ${zs.length==1?'zona':'zonas'} · ${fmtN(gA)} m²${mesCompleto?' · <span style="color:var(--verde);font-weight:700">concluído</span>':''}</span>${fasesTxt?`<div style="font-weight:500;font-size:11px;margin-top:2px;padding-left:14px">${fasesTxt}</div>`:''}${anulTxt?`<div style="font-weight:500;font-size:11px;margin-top:1px;padding-left:14px;color:var(--ink2)">⊘ Anuladas: ${anulTxt}</div>`:''}</td></tr>`;
+
+    if(!fechado){
+      zs.forEach(z=>{
+        const ri = z.anulada ? 'opacity:.5;text-decoration:line-through' : '';
+        const btnAnulZona = z.anulada
+          ? `<button class="mini" data-togglezona="${z.id}" title="Reativar zona" style="color:var(--verde)">↺</button>`
+          : `<button class="mini" data-togglezona="${z.id}" title="Anular zona inteira" style="color:var(--ink2)">⊘</button>`;
+        h+=`<tr style="${ri}"><td style="padding-left:18px">${z.desc||'(sem nome)'}${z.anulada?' <span style="font-size:9px;color:var(--verm);text-decoration:none">ANULADA</span>':''}</td><td style="font-size:12px;font-family:var(--mono)">${z.dataAuto||'—'}</td><td class="n">${fmtN(z.area)}</td>
+        ${FS.map(f=>`<td>${z.anulada?'—':chip(z,f)}</td>`).join('')}
+        <td style="text-decoration:none;white-space:nowrap">${btnAnulZona}<button class="mini" data-zedit="${z.id}">✏️</button><button class="mini" data-zdel="${z.id}" style="color:var(--verm)">🗑️</button></td></tr>`;
+      });
+    }
+    sA+=gA; nZonas+=zs.length;
+  });
+
+  h+=`<tr style="background:var(--cinza-obra);color:#fff;font-weight:800"><td colspan="2">Total (${nZonas} zonas)</td><td class="n">${fmtN(sA)}</td><td colspan="${FS.length}"></td><td></td></tr>`;
+  h+=`</table></div></div>`;
+  return h;
+}
+
+// ===== Aba HORAS =====
+function rHoras(){
+  const db=DB();
+  const extras=(db.extras||[]).slice();
+  const totHoras=extras.reduce((a,e)=>a+(+e.area||0),0);
+  const gH={}, ordemH=[];
+  extras.forEach(e=>{ const mk=e.mes||'sem'; if(!gH[mk]){gH[mk]=[];ordemH.push(mk);} gH[mk].push(e); });
+  ordemH.sort((a,b)=>a<b?1:a>b?-1:0);
+
+  let h=`<div class="big"><div class="titulo">Horas avulsas${totHoras>0?` · ${fmtN(totHoras)} h no total`:''}</div>`;
+  if(!equipaObra().length){
+    h+=`<div class="banner warm">Esta obra ainda não tem equipa afeta. Toca em <b>👷 Equipa</b> (em cima) e marca quem trabalha aqui.</div>`;
+  }
+  h+=`<div style="background:#F7F9F6;border:1px solid var(--linha);border-radius:10px;padding:11px;margin-bottom:12px">
+      <div class="row" style="margin-bottom:8px">
+        <label class="field" style="flex:2 1 160px">Descrição<input type="text" id="hDesc" placeholder="ex: Limpeza de obra"></label>
+        <label class="field" style="flex:0 1 90px">Horas<input type="number" step="0.5" id="hQtd" placeholder="0"></label>
+        <label class="field" style="flex:0 1 110px">Mês<input type="text" id="hMes" value="${mesAtual()}" placeholder="2026-06"></label>
+      </div>
+      <div class="note" style="margin:2px 0 6px">Quem fez estas horas:</div>
+      <div class="chk" id="hEq">${equipaObra().map(n=>`<label><input type="checkbox" value="${n}">${n}</label>`).join('')||'<span style="font-size:12px;color:var(--verm)">⚠ Marca a equipa da obra primeiro.</span>'}</div>
+      <button class="act" id="bRegHoras" style="width:100%;margin-top:10px">＋ Registar horas</button>
+    </div>`;
+
+  if(!extras.length){
+    h+=`<div class="empty" style="padding:14px"><span class="emoji" style="font-size:24px">⏱️</span>Sem registos de horas.</div>`;
+  } else {
+    ordemH.forEach(mk=>{
+      const lst=gH[mk]; const sub=lst.reduce((a,e)=>a+(+e.area||0),0);
+      h+=`<div style="margin-bottom:10px">
+        <div style="font-weight:800;font-size:12px;color:var(--ink2);text-transform:uppercase;letter-spacing:.04em;margin:4px 0 6px;display:flex;justify-content:space-between;align-items:center">
+          <span>${mk==='sem'?'Sem mês':mesLbl(mk)}</span><span style="font-family:var(--mono);color:var(--verde-esc)">${fmtN(sub)} h</span>
+        </div>`;
+      lst.forEach(e=>{
+        h+=`<div style="display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--linha);border-radius:9px;padding:9px 11px;margin-bottom:6px">
+          <div style="font-family:var(--mono);font-weight:800;font-size:16px;color:var(--verde-esc);min-width:52px;text-align:center;background:#E2F2EC;border-radius:7px;padding:6px 4px">${fmtN(e.area)}<span style="font-size:9px;font-weight:600;display:block;color:var(--ink2)">horas</span></div>
+          <div style="flex:1;min-width:0">
+            <div style="font-weight:700;font-size:13px">${e.desc||'(sem descrição)'}</div>
+            ${(e.equipa&&e.equipa.length)?`<div style="font-size:11px;color:var(--ink2);margin-top:1px">👷 ${e.equipa.join(', ')}</div>`:''}
+          </div>
+          <button class="mini" data-delh="${e.id}" style="color:var(--verm);font-size:16px">🗑️</button>
+        </div>`;
+      });
+      h+=`</div>`;
+    });
+  }
+  h+=`</div>`;
+  return h;
+}
+
+function rFormZona(){
+  const db=DB(); const FS=fasesObra();
+  const novo = editZona==='new';
+  const z = novo ? {desc:'',comp:'',alt:'',area:'',dataAuto:hojeISO(),fases:{}} : db.zones.find(x=>x.id===editZona);
+  const eqObra=equipaObra();
+  let h=`<div class="big"><div class="titulo">${novo?'Nova zona do auto':'Editar zona'}</div>
+    <div class="row">
+      <label class="field" style="flex:1 1 100%">Descrição da zona<input type="text" id="zDesc" value="${z.desc||''}" placeholder="ex: FACHADA PRINCIPAL"></label>
+    </div>
+    <div class="row">
+      <label class="field">Comprimento<input type="number" step="0.01" id="zComp" value="${z.comp||''}" placeholder="0"></label>
+      <label class="field">Altura<input type="number" step="0.01" id="zAlt" value="${z.alt||''}" placeholder="0"></label>
+      <label class="field">Área m²<input type="number" step="0.001" id="zArea" value="${z.area||''}" placeholder="0"></label>
+    </div>
+    <div class="note" style="margin-top:-4px">Se preencheres comprimento × altura, a área calcula-se sozinha. Senão escreve a área direta.</div>
+    <div class="row">
+      <label class="field" style="flex:1 1 100%">Data do auto<input type="date" id="zData" value="${z.dataAuto||hojeISO()}"></label>
+    </div>`;
+
+  if(!eqObra.length){
+    h+=`<div class="banner warm" style="margin:8px 0">Sem equipa afeta a esta obra — marca a equipa primeiro em <b>👷 Equipa</b>.</div>`;
+  }
+  h+=`<hr class="sep"><div class="note" style="margin-top:0"><b>Fases feitas nesta zona.</b> Liga as que já estão concluídas, escolhe o mês e quem trabalhou.</div>`;
+  FS.forEach(f=>{
+    const fd=(z.fases&&z.fases[f.id])||null;
+    const on=!!(fd&&fd.mes);
+    const preco = fd&&fd.preco!=null ? fd.preco : precoFasePadrao(f.id);
+    const mes = fd&&fd.mes ? fd.mes : mesAtual();
+    const eq = (fd&&fd.equipa)||eqObra.slice();
+    h+=`<div style="border:1px solid var(--linha);border-radius:10px;padding:11px;margin-top:10px;${on?'background:#FAFCFB':''}">
+      <div class="bar" style="margin:0 0 8px;align-items:center">
+        <span class="tagF" style="background:${faseCor(f.id)}22;color:${faseCor(f.id)};font-size:12px;padding:3px 9px">${faseNome(f.id)}</span>
+        <label style="display:flex;align-items:center;gap:7px;font-weight:700;font-size:13px;cursor:pointer;margin-left:auto"><input type="checkbox" class="fOn" data-f="${f.id}" ${on?'checked':''} style="width:auto;transform:scale(1.3)"> Concluída</label>
+      </div>
+      <div class="fBody" data-fbody="${f.id}" style="${on?'':'display:none'}">
+        <div class="row">
+          <label class="field" style="flex:1 1 100%">Mês<input type="text" class="fMes" data-f="${f.id}" value="${mes}" placeholder="2026-06"></label>
+        </div>
+        <input type="hidden" class="fPreco" data-f="${f.id}" value="${preco}">
+        <div class="note" style="margin:2px 0 6px">Quem trabalhou nesta fase:</div>
+        <div class="chk fEq" data-f="${f.id}">${eqObra.length? eqObra.map(n=>`<label class="${eq.includes(n)?'sel':''}"><input type="checkbox" value="${n}" ${eq.includes(n)?'checked':''}>${n}</label>`).join('') : '<span style="font-size:12px;color:var(--verm)">⚠ Marca a equipa da obra primeiro.</span>'}</div>
+      </div>
+    </div>`;
+  });
+  h+=`<div class="bar" style="margin-top:14px"><button class="act" id="bSaveZona" style="flex:1">Guardar zona</button><button class="sec" id="bCancZona">Cancelar</button></div></div>`;
+  return h;
+}
+
+/* ============================ RESUMO (m² por fase / mês) ============================ */
+function rResumo(){
+  if(resumoScope==='todas') return rResumoTodas();
+  return rResumoObra();
+}
+function rResumoObra(){
+  const db=DB(); const FS=fasesObra();
+  // recolher: mes -> {faseId: m²}  (fases concluídas, zona não anulada)
+  const porMes={};      // m² por fase
+  const valMes={};      // valor € por fase (área × preço da fase)
+  (db.zones||[]).forEach(z=>{
+    if(z.anulada) return;
+    const area=+z.area||0;
+    FS.forEach(f=>{
+      const fd=z.fases&&z.fases[f.id];
+      if(fd&&fd.mes&&!fd.anulada){
+        const ym=fd.mes;
+        (porMes[ym]=porMes[ym]||{})[f.id]=(porMes[ym][f.id]||0)+area;
+        (valMes[ym]=valMes[ym]||{})[f.id]=(valMes[ym][f.id]||0)+area*(fd.preco!=null?fd.preco:precoFasePadrao(f.id));
+      }
+    });
+  });
+  const meses=Object.keys(porMes).sort();
+  if(!meses.length){
+    return `<div class="big"><div class="empty"><span class="emoji">📊</span>Ainda não há fases concluídas para resumir.<br>Lança zonas no <b>Auto</b> e marca as fases feitas.</div></div>`;
+  }
+
+  // totais globais por fase + total geral
+  const totFase={}; FS.forEach(f=>totFase[f.id]=0);
+  const totValFase={}; FS.forEach(f=>totValFase[f.id]=0);
+  meses.forEach(ym=>FS.forEach(f=>{ totFase[f.id]+=(porMes[ym][f.id]||0); totValFase[f.id]+=(valMes[ym][f.id]||0); }));
+  const totGeral=FS.reduce((s,f)=>s+totFase[f.id],0);
+  const totValGeral=FS.reduce((s,f)=>s+totValFase[f.id],0);
+
+  // horas avulsas (total para o cartão ao lado das fases)
+  const extrasR=(db.extras||[]);
+  const totHorasR=extrasR.reduce((a,e)=>a+(+e.area||0),0);
+
+  let h=`<div class="big"><div class="titulo">Total trabalho concluído por fase — ${obraAtiva().nome}</div>
+    <div class="note" style="margin-top:0">m² de cada fase dados como concluídos, por mês do auto.</div>
+    <div class="cards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:8px 0 4px">
+      ${FS.map(f=>`<div style="background:${faseCor(f.id)}14;border:1px solid ${faseCor(f.id)}44;border-radius:10px;padding:10px 12px">
+        <div style="font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;font-weight:800;color:${faseCor(f.id)}">${faseNome(f.id)}</div>
+        <div style="font-family:var(--mono);font-size:20px;font-weight:800;margin-top:2px">${fmtN(totFase[f.id])}<span style="font-size:12px;font-weight:600;color:var(--ink2)"> m²</span></div>
+      </div>`).join('')}
+      ${totHorasR>0?`<div style="background:#E2F2EC;border:1px solid #9ED4BE;border-radius:10px;padding:10px 12px">
+        <div style="font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;font-weight:800;color:var(--verde-esc)">⏱️ Horas</div>
+        <div style="font-family:var(--mono);font-size:20px;font-weight:800;margin-top:2px;color:var(--verde-esc)">${fmtN(totHorasR)}<span style="font-size:12px;font-weight:600;color:var(--ink2)"> h</span></div>
+        <div style="font-family:var(--mono);font-size:12px;color:var(--ink2)">avulsas</div>
+      </div>`:''}
+    </div>
+  </div>`;
+
+  // tabela por mês
+  h+=`<div class="big"><div class="titulo">Por mês</div>
+    <div class="scroll"><table>
+      <tr><th>Mês</th>${FS.map(f=>`<th class="n" style="color:${faseCor(f.id)}">${faseNome(f.id)}</th>`).join('')}<th class="n">Total m²</th></tr>`;
+  meses.forEach(ym=>{
+    let tMes=0; FS.forEach(f=>tMes+=(porMes[ym][f.id]||0));
+    h+=`<tr><td><b>${mesLbl(ym)}</b></td>${FS.map(f=>{ const v=porMes[ym][f.id]||0; return `<td class="n">${v?fmtN(v):'—'}</td>`; }).join('')}<td class="n"><b>${fmtN(tMes)}</b></td></tr>`;
+  });
+  h+=`<tr style="background:#F5F7F4;font-weight:800"><td>Total</td>${FS.map(f=>`<td class="n">${fmtN(totFase[f.id])}</td>`).join('')}<td class="n">${fmtN(totGeral)}</td></tr>`;
+  h+=`</table></div>
+    <div class="note">Total concluído na obra: <b>${fmtN(totGeral)} m²</b></div>
+  </div>`;
+
+  // ===== Total de dias por funcionário (vindo do mapa de trabalho) =====
+  const FS2=fasesObra(); const aus=db.ausencias||[];
+  const eqNomes=[...new Set(aus.map(a=>a.nome))].sort();
+  let temDias=false;
+  let tabela=`<div class="big"><div class="titulo">Dias de trabalho por funcionário (mapa de trabalho)</div>
+    <div class="scroll"><table><tr><th>Funcionário</th><th>Cargo</th>${FS2.map(f=>`<th class="n" style="color:${faseCor(f.id)}">${faseNome(f.id)}</th>`).join('')}<th class="n">Total</th><th class="n">Férias</th><th class="n">Faltas</th></tr>`;
+  const corCargo={CHEFE:'#C45104',OFICIAL:'#1F7A4D',SERVENTE:'#5A636B'};
+  const lblCargo={CHEFE:'Chefe',OFICIAL:'Oficial',SERVENTE:'Servente'};
+  eqNomes.forEach(nome=>{
+    const cf={}; FS2.forEach(f=>cf[f.id]=0); let nFer=0,nFal=0;
+    aus.forEach(a=>{ if(a.nome!==nome)return; if(a.tipo==='trabalho')cf[a.fase||FS2[0].id]=(cf[a.fase||FS2[0].id]||0)+1; else if(a.tipo==='ferias')nFer++; else if(a.tipo==='faltas')nFal++; });
+    const tot=FS2.reduce((s,f)=>s+cf[f.id],0); if(tot===0&&!nFer&&!nFal) return;
+    temDias=true;
+    const cg=cargoFunc(nome)||'OFICIAL';
+    tabela+=`<tr><td><b>${nome}</b></td><td><span style="font-size:10px;font-weight:800;padding:2px 7px;border-radius:5px;background:${(corCargo[cg]||'#777')}22;color:${corCargo[cg]||'#777'}">${lblCargo[cg]||cg}</span></td>${FS2.map(f=>`<td class="n">${cf[f.id]||'—'}</td>`).join('')}<td class="n"><b>${tot||'—'}</b></td><td class="n">${nFer||'—'}</td><td class="n">${nFal||'—'}</td></tr>`;
+  });
+  tabela+=`</table></div></div>`;
+  if(temDias) h+=tabela;
+
+  return h;
+}
+function rResumoTodas(){
+  // chave de fase = nome normalizado (junta EPS de obras diferentes mesmo com ids diferentes)
+  const norm=s=>(s||'').trim().toUpperCase();
+  const faseInfo={};        // nomeNorm -> {label, cor}
+  const ordemFase=[];       // ordem de 1º aparecimento
+  const porObra={};         // obraNome -> {faseNorm: m²}
+  const porObraVal={};      // obraNome -> {faseNorm: €}
+  const porMes={};          // ym -> {faseNorm: m²}
+  let totGeral=0, totValGeral=0;
+
+  STORE.obras.forEach(o=>{
+    const db=o.db; const fases=(db.config.fases||[]).filter(f=>f.ativa!==false);
+    porObra[o.nome]=porObra[o.nome]||{}; porObraVal[o.nome]=porObraVal[o.nome]||{};
+    (db.zones||[]).forEach(z=>{
+      if(z.anulada) return;
+      const area=+z.area||0;
+      fases.forEach(f=>{
+        const fd=z.fases&&z.fases[f.id];
+        if(fd&&fd.mes&&!fd.anulada){
+          const key=norm(f.nome);
+          if(!faseInfo[key]){ faseInfo[key]={label:f.nome,cor:f.cor||'#777'}; ordemFase.push(key); }
+          const preco=fd.preco!=null?fd.preco:((db.config.precos||{})[f.id]||0);
+          porObra[o.nome][key]=(porObra[o.nome][key]||0)+area;
+          porObraVal[o.nome][key]=(porObraVal[o.nome][key]||0)+area*preco;
+          (porMes[fd.mes]=porMes[fd.mes]||{})[key]=(porMes[fd.mes][key]||0)+area;
+          totGeral+=area; totValGeral+=area*preco;
+        }
+      });
+    });
+  });
+
+  const fkeys=ordemFase;
+  if(!fkeys.length){
+    return `<div class="big"><div class="empty"><span class="emoji">📊</span>Ainda não há fases concluídas em nenhuma obra.</div></div>`;
+  }
+  const cor=k=>faseInfo[k].cor, lbl=k=>faseInfo[k].label;
+  const totFase={}; fkeys.forEach(k=>totFase[k]=0);
+  Object.values(porObra).forEach(ob=>fkeys.forEach(k=>totFase[k]+=(ob[k]||0)));
+
+  // cartões globais por fase
+  let h=`<div class="big"><div class="titulo">Trabalho concluído — todas as obras</div>
+    <div class="note" style="margin-top:0">Soma de todas as obras. As fases com o mesmo nome juntam-se (ex.: EPS de obras diferentes).</div>
+    <div class="cards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:8px 0 4px">
+      ${fkeys.map(k=>`<div style="background:${cor(k)}14;border:1px solid ${cor(k)}44;border-radius:10px;padding:10px 12px">
+        <div style="font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;font-weight:800;color:${cor(k)}">${lbl(k)}</div>
+        <div style="font-family:var(--mono);font-size:20px;font-weight:800;margin-top:2px">${fmtN(totFase[k])}<span style="font-size:12px;font-weight:600;color:var(--ink2)"> m²</span></div>
+      </div>`).join('')}
+      <div style="background:var(--cinza-obra);color:#fff;border-radius:10px;padding:10px 12px">
+        <div style="font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;font-weight:800;opacity:.85">Total</div>
+        <div style="font-family:var(--mono);font-size:20px;font-weight:800;margin-top:2px">${fmtN(totGeral)}<span style="font-size:12px;font-weight:600;opacity:.8"> m²</span></div>
+      </div>
+    </div>
+  </div>`;
+
+  // por obra
+  h+=`<div class="big"><div class="titulo">Por obra</div>
+    <div class="scroll"><table><tr><th>Obra</th>${fkeys.map(k=>`<th class="n" style="color:${cor(k)}">${lbl(k)}</th>`).join('')}<th class="n">Total m²</th></tr>`;
+  STORE.obras.forEach(o=>{
+    const ob=porObra[o.nome]||{};
+    let tm=0; fkeys.forEach(k=>{ tm+=(ob[k]||0); });
+    if(tm===0) return;
+    h+=`<tr><td><b>${o.nome}</b></td>${fkeys.map(k=>{ const v=ob[k]||0; return `<td class="n">${v?fmtN(v):'—'}</td>`; }).join('')}<td class="n"><b>${fmtN(tm)}</b></td></tr>`;
+  });
+  h+=`<tr style="background:#F5F7F4;font-weight:800"><td>Total</td>${fkeys.map(k=>`<td class="n">${fmtN(totFase[k])}</td>`).join('')}<td class="n">${fmtN(totGeral)}</td></tr>`;
+  h+=`</table></div></div>`;
+
+  // por mês (todas as obras juntas)
+  const meses=Object.keys(porMes).sort();
+  h+=`<div class="big"><div class="titulo">Por mês (todas as obras)</div>
+    <div class="scroll"><table><tr><th>Mês</th>${fkeys.map(k=>`<th class="n" style="color:${cor(k)}">${lbl(k)}</th>`).join('')}<th class="n">Total m²</th></tr>`;
+  meses.forEach(ym=>{
+    let tm=0; fkeys.forEach(k=>tm+=(porMes[ym][k]||0));
+    h+=`<tr><td><b>${mesLbl(ym)}</b></td>${fkeys.map(k=>{ const v=porMes[ym][k]||0; return `<td class="n">${v?fmtN(v):'—'}</td>`; }).join('')}<td class="n"><b>${fmtN(tm)}</b></td></tr>`;
+  });
+  h+=`</table></div>
+    <div class="note">Total concluído em todas as obras: <b>${fmtN(totGeral)} m²</b></div>
+  </div>`;
+  return h;
+}
+
+/* ============================ MAPA DE TRABALHO ============================ */
+function rMapa(){
+  const db=DB(); const FS=fasesObra();
+  if(!db.ausencias) db.ausencias=[];
+  const eq=equipaObra();
+  let h='';
+  if(!eq.length){
+    return `<div class="big"><div class="empty"><span class="emoji">📅</span>Sem equipa afeta a esta obra.<br>Marca quem trabalha aqui em <b>👷 Equipa</b> para usar o mapa.</div></div>`;
+  }
+  const TIPOS={ferias:{lbl:'Férias',cor:'#C9A227'},faltas:{lbl:'Faltas',cor:'#C0392B'}};
+  let sel = mapSel || ('fase:'+(FS[0]?FS[0].id:'F1'));
+  if(sel.startsWith('fase:') && !FS.some(f=>f.id===sel.slice(5))) sel='fase:'+(FS[0]?FS[0].id:'F1');
+  mapSel=sel;
+
+  // meses a mostrar: meses com marcação no auto (fases concluídas) + meses já marcados no mapa + mês atual
+  const mesesSet=new Set([mesAtual()]);
+  (db.zones||[]).forEach(z=>{ if(z.anulada) return; FS.forEach(f=>{ const fd=z.fases&&z.fases[f.id]; if(fd&&fd.mes&&!fd.anulada) mesesSet.add(fd.mes); }); });
+  db.ausencias.forEach(a=>{ if(a.dia) mesesSet.add(a.dia.slice(0,7)); });
+  mesesExtra.forEach(m=>mesesSet.add(m));
+  const meses=[...mesesSet].filter(Boolean).sort();
+
+  h+=`<div class="big"><div class="titulo">Mapa de trabalho</div>
+    <div class="note" style="margin-top:0">Escolhe a <b>fase</b> (ou Férias/Faltas) e <b>toca nos dias</b> de cada pessoa. Toca no <b>número do dia</b> para marcar a equipa toda nesse dia.</div>
+    <div class="maptools">
+      ${FS.map(f=>{ const v='fase:'+f.id; const c=faseCor(f.id); return `<button data-msel="${v}" style="border-color:${c};${sel===v?`background:${c};color:#fff`:`color:${c}`}">${faseNome(f.id)}</button>`; }).join('')}
+      ${Object.keys(TIPOS).map(t=>`<button data-msel="${t}" style="border-color:${TIPOS[t].cor};${sel===t?`background:${TIPOS[t].cor};color:#fff`:`color:${TIPOS[t].cor}`}">${TIPOS[t].lbl}</button>`).join('')}
+      <button data-msel="apagar" style="border-color:var(--ink2);${sel==='apagar'?'background:var(--ink2);color:#fff':'color:var(--ink2)'}">🧹 Apagar</button>
+    </div>
+    <div class="legend">${FS.map(f=>`<span><b style="color:${faseCor(f.id)}">${faseLetra(f.id)}</b> = ${faseNome(f.id)}</span>`).join('')}<span><b style="color:${TIPOS.ferias.cor}">F</b> = Férias</span><span><b style="color:${TIPOS.faltas.cor}">•</b> = Falta</span><span><b style="color:#9aa3a8">↗</b> = noutra obra</span><span><b style="color:#7B3FA0">■</b> = feriado Segovia</span></div>`;
+
+  const ausDia=(nome,ymd)=>db.ausencias.find(a=>a.nome===nome&&a.dia===ymd);
+  const corCel=(a)=>{ if(!a)return null; if(a.tipo==='trabalho')return faseCor(a.fase||FS[0].id); return (TIPOS[a.tipo]||{}).cor||'#999'; };
+  const letraCel=(a)=>{ if(!a)return ''; if(a.tipo==='trabalho')return faseLetra(a.fase||FS[0].id); return a.tipo==='ferias'?'F':'•'; };
+
+  meses.forEach(ym=>{
+    const nd=diasNoMes(ym);
+    let diasTrab=0, temMarcacao=false; db.ausencias.forEach(a=>{ if(a.dia&&a.dia.slice(0,7)===ym){ temMarcacao=true; if(a.tipo==='trabalho') diasTrab++; } });
+    const ehExtraVazio = mesesExtra.includes(ym) && !temMarcacao;
+    h+=`<div class="mapmes" data-mapmes="${ym}"><span id="arr_${ym}">▼</span>${mesLbl(ym)} <span style="font-weight:500;color:var(--ink2);font-size:11px">· ${diasTrab} dias-pessoa</span>${ehExtraVazio?`<button class="mini" data-rmmes="${ym}" title="Anular este mês" style="margin-left:auto;color:#fff;background:var(--verm);border-radius:5px;font-size:11px;font-weight:700;padding:2px 8px;line-height:1.3">✕ anular</button>`:''}</div>`;
+    h+=`<div class="mapgrid" id="grid_${ym}"><table><tr><th class="nm">Funcionário</th>`;
+    for(let d=1;d<=nd;d++){ const ymd=ym+'-'+String(d).padStart(2,'0'); const dow=new Date(ymd+'T00:00:00').getDay(); const we=dow===0||dow===6;
+      const fer=feriadoNome(ymd);
+      const bgDia = fer ? '#7B3FA0' : (we?'var(--verm)':'var(--verde)');
+      h+=`<th class="dh" data-mapdia="${ymd}" style="background:${bgDia}" title="${fer?'🎉 Feriado: '+fer:'Marcar equipa toda no dia '+d}">${d}</th>`; }
+    h+=`</tr>`;
+    eq.forEach(nome=>{
+      h+=`<tr><td class="nm">${nome}</td>`;
+      for(let d=1;d<=nd;d++){ const ymd=ym+'-'+String(d).padStart(2,'0'); const dow=new Date(ymd+'T00:00:00').getDay(); const we=dow===0||dow===6;
+        const a=ausDia(nome,ymd);
+        if(!a){
+          const outra=ocupadoNoutraObra(nome,ymd);
+          if(outra){ h+=`<td class="cel ocup" data-cnome="${nome}" data-cdia="${ymd}" title="Já em ${lblObraCurto(outra)}" style="background:repeating-linear-gradient(45deg,#E8EAE7,#E8EAE7 3px,#DADDD8 3px,#DADDD8 6px);color:#9aa3a8;cursor:not-allowed">↗</td>`; continue; }
+        }
+        const bg=a?corCel(a):(feriadoNome(ymd)?'#EFE3F5':(we?'#EEF1F0':'#fff')); const tx=a?letraCel(a):'';
+        h+=`<td class="cel" data-cnome="${nome}" data-cdia="${ymd}"${feriadoNome(ymd)?` title="🎉 ${feriadoNome(ymd)}"`:''} style="background:${bg}">${tx}</td>`; }
+      h+=`</tr>`;
+    });
+    h+=`</table></div>`;
+  });
+  // seletor de mês no fim — destacado
+  h+=`<hr class="sep">
+    <div style="background:#FFF7E6;border:1px solid #F0D78A;border-radius:10px;padding:12px">
+      <div style="font-weight:800;font-size:13px;color:#7a5d12;margin-bottom:8px">📅 Marcar férias / abrir outro mês</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+        <span style="font-size:13px;font-weight:700;color:#7a5d12">Escolhe o mês:</span>
+        <input type="month" id="mapMesPick" value="${mesAtual()}" style="flex:0 0 auto;width:auto;min-width:150px;max-width:180px">
+        <button class="act lar" id="bAddMes" style="white-space:nowrap;padding:7px 12px;font-size:13px;flex:0 0 auto">＋ Adicionar mês</button>
+      </div>
+      <div class="note" style="margin:8px 0 0;color:#8a6d22">Depois escolhe <b>Férias</b> em cima e toca nos dias de cada pessoa.</div>
+    </div>`;
+  h+=`</div>`;
+  return h;
+}
+function rDados(){
+  garantirFaturas();
+  const nObras=STORE.obras.length, nFunc=todosFuncionarios().length;
+  let totZonas=0, totMapa=0, totExtras=0;
+  STORE.obras.forEach(o=>{ totZonas+=(o.db.zones||[]).length; totMapa+=(o.db.ausencias||[]).length; totExtras+=(o.db.extras||[]).length; });
+  const nFat=STORE.faturas.length;
+
+  return `<div class="big"><div class="titulo">Quem és tu</div>
+    <label class="field">Nome do chefe de grupo<input type="text" id="dChefe" value="${chefe}" placeholder="ex: MAIKER" style="margin-top:4px"></label>
+    <div class="note">Fica guardado para identificar quem fez os registos.</div>
+    <button class="sec" id="bSaveChefe" style="margin-top:8px">Guardar nome</button>
+  </div>
+
+  <div class="big"><div class="titulo">Estado atual</div>
+    <div class="note" style="margin-top:0"><b>${nObras}</b> obra(s) · <b>${nFunc}</b> funcionário(s) · <b>${totZonas}</b> zonas · <b>${totMapa}</b> marcações no mapa · <b>${totExtras}</b> registos de horas · <b>${nFat}</b> fatura(s).</div>
+  </div>
+
+  <div class="big"><div class="titulo">Obras</div>
+    <div class="note" style="margin-top:0">Cria ou elimina obras. Eliminar uma obra apaga o seu auto e mapa — não tem retorno.</div>
+    ${STORE.obras.length? STORE.obras.map(o=>`<div style="display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--linha);border-radius:9px;padding:10px 12px;margin-bottom:6px">
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:700;font-size:13px">${o.nome}</div>
+          <div style="font-size:11px;color:var(--ink2)">${(o.db.zones||[]).length} zonas · ${(o.db.ausencias||[]).length} marcações</div>
+        </div>
+        <button class="mini" data-obradel="${o.id}" style="color:var(--verm);font-size:16px">🗑️</button>
+      </div>`).join('') : '<div class="note">Sem obras. Cria a primeira abaixo.</div>'}
+    <button class="act" id="bNovaObraDados" style="width:100%;margin-top:8px">＋ Criar obra nova</button>
+  </div>
+
+  <div class="big"><div class="titulo">1 · Carregar dados da empresa</div>
+    <div class="note" style="margin-top:0">Cola a <b>cópia de segurança</b> da app <b>Funcionários</b> e toca em <b>Ver obras</b>. Depois escolhes <b>qual obra</b> queres carregar — ela traz auto, mapa e funcionários. Se a obra já existir aqui, é <b>substituída</b>.</div>
+    ${ importFonte ? `
+      <div style="background:#EFF6F2;border:1px solid #9ED4BE;border-radius:10px;padding:10px;margin-top:8px">
+        <div style="font-weight:800;font-size:12px;margin-bottom:6px">Obras no ficheiro · escolhe uma:</div>
+        ${importFonte.map((o,i)=>{ const existe=STORE.obras.some(x=>x.id===o.id||x.nome===o.nome); const nz=(o.db&&o.db.zones?o.db.zones.length:0); return `<div style="display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--linha);border-radius:8px;padding:8px 10px;margin-bottom:5px">
+            <div style="flex:1;min-width:0">
+              <div style="font-weight:700;font-size:12.5px">${o.nome}</div>
+              <div style="font-size:10.5px;color:var(--ink2)">${nz} zonas · ${existe?'<b style="color:var(--laranja-esc)">já existe — vai substituir</b>':'<b style="color:var(--verde-esc)">nova — vai criar</b>'}</div>
+            </div>
+            <button class="act" data-impobra="${i}" style="padding:7px 12px;font-size:12px;white-space:nowrap">Importar</button>
+          </div>`; }).join('')}
+        <button class="sec" id="bImpCancel" style="width:100%;margin-top:4px">Cancelar</button>
+      </div>`
+    : `
+      <textarea id="dImport" placeholder="Cola aqui o JSON da app Funcionários…"></textarea>
+      <div class="bar"><button class="act" id="bImport" style="flex:1">Ver obras do ficheiro</button></div>`
+    }
+  </div>
+
+  <div class="big"><div class="titulo">2 · Enviar AUTO para a empresa</div>
+    <div class="note" style="margin-top:0">Gera o ficheiro de <b>zonas (auto)</b> da obra escolhida, no formato que a app <b>Funcionários</b> importa — <b>substitui só as zonas</b> dessa obra, mantendo o resto.</div>
+    <label class="field" style="margin-bottom:8px">Obra a enviar
+      <select id="expObra" style="margin-top:4px">${STORE.obras.map(o=>`<option value="${o.id}" ${o.id===STORE.ativa?'selected':''}>${o.nome} · ${(o.db.zones||[]).length} zonas</option>`).join('')}</select>
+    </label>
+    <div class="bar">
+      <button class="act lar" id="bExpAuto" style="flex:1">⬇ Descarregar AUTO</button>
+      <button class="sec" id="bCopyAuto">Copiar</button>
+    </div>
+    <details style="margin-top:6px"><summary>Como meter na app Funcionários?</summary>
+      <div class="note">Na app Funcionários: escolhe a <b>mesma obra</b> como ativa → <b>Configuração</b> → <b>Importar</b> → escolhe este ficheiro. Repete para cada obra.</div>
+    </details>
+  </div>
+
+  <div class="big"><div class="titulo">3 · Enviar tudo (auto + mapa + cargos)</div>
+    <div class="note" style="margin-top:0">Cópia completa de todas as obras, com autos, mapa de trabalho e cargos da equipa. <b>Substitui TUDO</b> na app Funcionários — usa só quando ninguém estiver a mexer na app grande.</div>
+    <div class="bar">
+      <button class="sec" id="bExpFull" style="flex:1">⬇ Cópia completa</button>
+      <button class="sec" id="bCopyFull">Copiar</button>
+    </div>
+  </div>
+
+  <div class="big"><div class="titulo">4 · Cópia de segurança desta app</div>
+    <div class="note" style="margin-top:0">Guarda <b>tudo o que tens aqui</b> (obras, autos, mapa, horas, equipa e faturas) num ficheiro só teu. Serve para não perderes nada se trocares de telemóvel.</div>
+    <div class="bar">
+      <button class="act" id="bBackup" style="flex:1">⬇ Descarregar cópia</button>
+    </div>
+    <hr class="sep">
+    <div class="note" style="margin-top:0">Restaurar uma cópia desta app (substitui tudo o que está aqui agora):</div>
+    <textarea id="dRestore" placeholder="Cola aqui a cópia desta app…"></textarea>
+    <div class="bar"><button class="sec" id="bRestore" style="flex:1">Restaurar cópia</button></div>
+  </div>
+
+  <div class="big"><div class="titulo">5 · Exportar faturas</div>
+    <div class="note" style="margin-top:0">${nFat? `Descarrega as <b>${nFat}</b> fatura(s) em ficheiro CSV (abre no Excel).` : 'Ainda não há faturas registadas.'}</div>
+    <div class="bar"><button class="${nFat?'act':'sec'}" id="bExpFat" style="flex:1" ${nFat?'':'disabled'}>⬇ Descarregar faturas (CSV)</button></div>
+  </div>
+
+  <div class="big"><div class="titulo">Recomeçar</div>
+    <div class="note" style="margin-top:0">Apaga tudo o que está nesta app do chefe (não mexe na app Funcionários). Faz uma cópia de segurança antes!</div>
+    <button class="sec danger" id="bReset">Limpar esta app</button>
+  </div>`;
+}
+
+/* ============================ FATURAS (lista única global) ============================ */
+function garantirFaturas(){ if(!Array.isArray(STORE.faturas)) STORE.faturas=[]; }
+function adicionarFatura(f){
+  garantirFaturas();
+  const id=STORE.faturas.reduce((m,x)=>Math.max(m,x.id||0),0)+1;
+  STORE.faturas.push({id, numero:f.numero||'', data:f.data||'', valor:+f.valor||0, desc:f.desc||'', estado:f.estado||'pendente'});
+  saveLocal();
+}
+function removerFatura(id){ garantirFaturas(); STORE.faturas=STORE.faturas.filter(f=>f.id!==id); saveLocal(); }
+function alternarEstadoFatura(id){
+  garantirFaturas();
+  const f=STORE.faturas.find(x=>x.id===id); if(f){ f.estado=(f.estado==='paga'?'pendente':'paga'); saveLocal(); }
+}
+
+function rFaturas(){
+  garantirFaturas();
+  const todas=STORE.faturas.slice().sort((a,b)=>(b.data||'').localeCompare(a.data||'')||b.id-a.id);
+  const lista = fatFiltro==='todas' ? todas : todas.filter(f=>f.estado===fatFiltro);
+  const totalTodas=todas.reduce((a,f)=>a+(+f.valor||0),0);
+  const totalPagas=todas.filter(f=>f.estado==='paga').reduce((a,f)=>a+(+f.valor||0),0);
+  const totalPend=todas.filter(f=>f.estado==='pendente').reduce((a,f)=>a+(+f.valor||0),0);
+
+  let h=`<div class="big"><div class="titulo">Registo de faturas</div>
+    <div style="background:#F7F9F6;border:1px solid var(--linha);border-radius:10px;padding:11px;margin-bottom:12px">
+      <div class="row" style="margin-bottom:8px">
+        <label class="field" style="flex:1 1 110px">Nº fatura<input type="text" id="fNum" placeholder="ex: 2026/123"></label>
+        <label class="field" style="flex:0 1 140px">Data<input type="date" id="fData" value="${hojeISO()}"></label>
+        <label class="field" style="flex:0 1 120px">Valor €<input type="number" step="0.01" id="fValor" placeholder="0,00"></label>
+      </div>
+      <label class="field" style="margin-bottom:8px">Descrição<input type="text" id="fDesc" placeholder="ex: Fatura ETICS Segovia"></label>
+      <div class="note" style="margin:0 0 6px">Estado:</div>
+      <div class="chk" id="fEstado">
+        <label class="sel"><input type="radio" name="festado" value="pendente" checked>Pendente</label>
+        <label><input type="radio" name="festado" value="paga">Paga</label>
+      </div>
+      <button class="act" id="bAddFat" style="width:100%;margin-top:10px">＋ Registar fatura</button>
+    </div>`;
+
+  // cartões de totais
+  h+=`<div class="cards" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px">
+      <div style="background:#EEF1F0;border:1px solid var(--linha);border-radius:10px;padding:10px">
+        <div style="font-size:10px;text-transform:uppercase;font-weight:800;color:var(--ink2)">Total</div>
+        <div style="font-family:var(--mono);font-size:15px;font-weight:800;margin-top:2px">${fmtEur(totalTodas)}</div>
+      </div>
+      <div style="background:#FDF1E7;border:1px solid #F0C39A;border-radius:10px;padding:10px">
+        <div style="font-size:10px;text-transform:uppercase;font-weight:800;color:var(--laranja-esc)">Pendente</div>
+        <div style="font-family:var(--mono);font-size:15px;font-weight:800;margin-top:2px;color:var(--laranja-esc)">${fmtEur(totalPend)}</div>
+      </div>
+      <div style="background:#E2F2EC;border:1px solid #9ED4BE;border-radius:10px;padding:10px">
+        <div style="font-size:10px;text-transform:uppercase;font-weight:800;color:var(--verde-esc)">Paga</div>
+        <div style="font-family:var(--mono);font-size:15px;font-weight:800;margin-top:2px;color:var(--verde-esc)">${fmtEur(totalPagas)}</div>
+      </div>
+    </div>`;
+
+  // filtros
+  h+=`<div class="bar" style="margin:0 0 10px;gap:6px">
+      ${['todas','pendente','paga'].map(fl=>`<button class="sec" data-fatfiltro="${fl}" style="${fatFiltro===fl?'background:var(--verde);color:#fff;border-color:var(--verde)':''}">${fl==='todas'?'Todas':fl==='paga'?'Pagas':'Pendentes'}</button>`).join('')}
+    </div>`;
+
+  if(!lista.length){
+    h+=`<div class="empty" style="padding:18px"><span class="emoji">🧾</span>${todas.length?'Nenhuma fatura neste filtro.':'Sem faturas registadas.'}</div>`;
+  } else {
+    lista.forEach(f=>{
+      const paga=f.estado==='paga';
+      h+=`<div style="display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--linha);border-left:4px solid ${paga?'var(--verde)':'var(--laranja)'};border-radius:9px;padding:10px 12px;margin-bottom:7px">
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:800;font-size:13px">${f.numero||'(sem nº)'} <span style="font-weight:500;color:var(--ink2);font-size:11px;font-family:var(--mono)">${f.data||''}</span></div>
+          ${f.desc?`<div style="font-size:12px;color:var(--ink2);margin-top:1px">${f.desc}</div>`:''}
+        </div>
+        <div style="font-family:var(--mono);font-weight:800;font-size:14px;white-space:nowrap">${fmtEur(f.valor)}</div>
+        <button class="mini" data-fatestado="${f.id}" title="Marcar como ${paga?'pendente':'paga'}" style="font-size:11px;font-weight:800;padding:3px 8px;border-radius:5px;background:${paga?'#E2F2EC':'#FDF1E7'};color:${paga?'var(--verde-esc)':'var(--laranja-esc)'}">${paga?'✓ paga':'pendente'}</button>
+        <button class="mini" data-fatdel="${f.id}" style="color:var(--verm);font-size:15px">🗑️</button>
+      </div>`;
+    });
+  }
+  h+=`</div>`;
+  return h;
+}
+
+/* ============================ ARQUIVO (fotos de autos e faturas) ============================ */
+let arqTipo='auto';        // secção ativa: 'auto' | 'fatura'
+let arqFotos={auto:null, fatura:null}; // cache carregado do IndexedDB (null = ainda não carregado)
+
+function carregarArquivo(){
+  fotoListar(arqTipo).then(l=>{ arqFotos[arqTipo]=l; if(tab==='arquivo') render(); }).catch(()=>{ arqFotos[arqTipo]=[]; if(tab==='arquivo') render(); });
+}
+function rArquivo(){
+  const fotos = arqFotos[arqTipo];
+  const tituloSec = arqTipo==='auto'?'Autos de medição':'Faturas';
+  let h=`<div class="big"><div class="titulo">Arquivo de fotos</div>
+    <div class="bar" style="margin:0 0 10px;gap:6px">
+      <button class="sec" data-arqtipo="auto" style="flex:1;${arqTipo==='auto'?'background:var(--laranja);color:#fff;border-color:var(--laranja)':''}">📐 Autos</button>
+      <button class="sec" data-arqtipo="fatura" style="flex:1;${arqTipo==='fatura'?'background:var(--laranja);color:#fff;border-color:var(--laranja)':''}">🧾 Faturas</button>
+    </div>
+    <div style="background:#F7F9F6;border:1px solid var(--linha);border-radius:10px;padding:12px;margin-bottom:12px">
+      <div style="font-weight:800;font-size:13px;margin-bottom:8px">＋ Nova foto de ${arqTipo==='auto'?'auto':'fatura'}</div>
+      <label class="field" style="margin-bottom:8px">Descrição (opcional)<input type="text" id="arqDesc" placeholder="ex: ${arqTipo==='auto'?'Auto junho fachada':'Fatura 2026/123'}"></label>
+      <input type="file" id="arqFile" accept="image/*" capture="environment" style="display:none">
+      <button class="act" id="bArqTirar" style="width:100%">📷 Tirar foto / escolher imagem</button>
+      <div class="note" style="margin:6px 0 0">A foto é comprimida e guardada nesta app. Tira fotos nítidas e bem enquadradas.</div>
+    </div>`;
+
+  if(fotos===null){
+    h+=`<div class="empty" style="padding:18px"><span class="emoji">⏳</span>A carregar fotos…</div>`;
+  } else if(!fotos.length){
+    h+=`<div class="empty" style="padding:18px"><span class="emoji">📷</span>Sem fotos de ${tituloSec.toLowerCase()} ainda.</div>`;
+  } else {
+    h+=`<div class="titulo" style="font-size:12px">${tituloSec} · ${fotos.length} foto(s)</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:8px">
+      ${fotos.map(f=>`<div style="background:var(--card);border:1px solid var(--linha);border-radius:10px;overflow:hidden">
+        <img src="${f.img}" data-arqver="${f.id}" style="width:100%;height:120px;object-fit:cover;display:block;cursor:zoom-in">
+        <div style="padding:7px 9px">
+          <div style="font-size:11px;font-weight:700;line-height:1.2">${f.desc||'(sem descrição)'}</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px">
+            <span style="font-size:10px;color:var(--ink2);font-family:var(--mono)">${f.data||''}</span>
+            <button class="mini" data-arqdel="${f.id}" style="color:var(--verm);font-size:14px">🗑️</button>
+          </div>
+        </div>
+      </div>`).join('')}
+      </div>`;
+  }
+  h+=`</div>`;
+  return h;
+}
+
+/* ============================ EQUIPA (aba — lista única global) ============================ */
+function rEquipa(){
+  const lista=todosFuncionarios();
+  const corCargo={CHEFE:'#C45104',OFICIAL:'#1F7A4D',SERVENTE:'#5A636B'};
+  let h=`<div class="big"><div class="titulo">Equipa · ${lista.length} funcionário(s)</div>
+    <div class="note" style="margin-top:0">Lista única para <b>todas as obras</b>. Define o <b>cargo</b> de cada um. Estes funcionários ficam disponíveis em todas as obras (auto, horas e mapa de trabalho).</div>
+    <div style="margin:12px 0;display:flex;flex-direction:column;gap:7px">
+      ${lista.map(n=>{ const cg=cargoFunc(n)||'OFICIAL'; return `<div style="display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--linha);border-radius:9px;padding:10px 12px">
+        <span style="flex:1;font-weight:700;display:flex;align-items:center;gap:8px"><span style="width:9px;height:9px;border-radius:50%;background:${corCargo[cg]||'#777'};display:inline-block"></span>${n}</span>
+        <select class="eqCargo" data-nome="${n}" style="width:auto;min-width:118px;padding:7px 9px;font-weight:700">
+          <option value="CHEFE" ${cg==='CHEFE'?'selected':''}>Chefe</option>
+          <option value="OFICIAL" ${cg==='OFICIAL'?'selected':''}>Oficial</option>
+          <option value="SERVENTE" ${cg==='SERVENTE'?'selected':''}>Servente</option>
+        </select>
+        <button class="mini" data-eqdel="${n}" title="Remover da equipa" style="color:var(--verm);font-size:16px">🗑️</button>
+      </div>`; }).join('')}
+    </div>
+    <hr class="sep">
+    <div class="bar"><input type="text" id="eqNovo" placeholder="Adicionar novo funcionário" style="flex:1;text-transform:uppercase"><button class="act" id="eqAdd" style="white-space:nowrap">＋ Adicionar</button></div>
+  </div>`;
+  return h;
+}
+
+/* ============================ RENDER ============================ */
+function pedirNovaObra(){
+  const nome=prompt('Nome da obra nova:');
+  if(nome===null) return;
+  if(!nome.trim()){ toast('Escreve um nome'); return; }
+  if(criarObra(nome.trim())){ tab='auto'; editZona=null; render(); toast('Obra criada ✓'); }
+}
+function render(){
+  // barra de obras (botões fixos)
+  const obraBar=document.getElementById('obraBar');
+  const lblObra=(nome)=>{ const m=nome.match(/SEGOVIA[_\s]*(\d+)[_\s]*(.*)/i); if(m) return m[1]+' · '+m[2].replace(/_/g,' ').trim(); return nome.replace(/_/g,' '); };
+  obraBar.innerHTML=STORE.obras.map(o=>`<button data-obra="${o.id}" class="${o.id===STORE.ativa?'on':''}" title="${o.nome}">${lblObra(o.nome)}</button>`).join('')
+    + `<button data-novaobra="1" title="Criar obra nova" style="flex:0 0 auto;min-width:40px;font-size:18px">＋</button>`;
+  obraBar.querySelectorAll('[data-obra]').forEach(b=>b.onclick=()=>{ STORE.ativa=b.dataset.obra; editZona=null; mapSel=null; saveLocal(); render(); });
+  const bNovaO=obraBar.querySelector('[data-novaobra]'); if(bNovaO) bNovaO.onclick=pedirNovaObra;
+  document.getElementById('whoBox').innerHTML = (chefe?('👤 '+chefe+'<br>'):'') + '<span style="opacity:.7">'+equipaObra().length+' na equipa</span>';
+
+  // nav
+  document.querySelectorAll('#nav button').forEach(b=>{
+    let act=(b.dataset.t===tab);
+    if(b.dataset.t==='resumo' && tab==='resumo' && resumoScope==='todas') act=false; // Geral obras não acende a aba Resumo
+    b.classList.toggle('on', act);
+  });
+  // destacar botões de cabeçalho ativos
+  const hbtns={btnEquipa:'equipa',btnFaturas:'faturas'};
+  Object.entries(hbtns).forEach(([id,t])=>{ const b=document.getElementById(id); if(b){ const act=(tab===t); b.style.background=act?'var(--laranja)':'#222d34'; } });
+  const bt=document.getElementById('btnTodas'); if(bt){ bt.style.background=(tab==='resumo'&&resumoScope==='todas')?'var(--laranja)':'#222d34'; }
+
+  const m=document.getElementById('main');
+  const abasSemObra=['equipa','faturas','arquivo','dados'];
+  if(!temObras() && !abasSemObra.includes(tab)){
+    m.innerHTML=`<div class="big"><div class="empty" style="padding:24px"><span class="emoji">📭</span>Não há obras nesta app.<br>Cria uma obra nova, ou vai a <b>🔄 Dados</b> para carregar/restaurar dados.</div>
+      <button class="act" id="bNovaObraVazio" style="width:100%;margin-top:8px">＋ Criar obra nova</button>
+      <button class="sec" id="bIrDados" style="width:100%;margin-top:6px">Ir a Dados</button></div>`;
+    const bn=document.getElementById('bNovaObraVazio'); if(bn) bn.onclick=pedirNovaObra;
+    const b=document.getElementById('bIrDados'); if(b) b.onclick=()=>{ tab='dados'; render(); };
+    const fab0=document.getElementById('fab'); if(fab0) fab0.innerHTML='';
+    return;
+  }
+  if(tab==='auto') m.innerHTML=rAuto();
+  else if(tab==='resumo') m.innerHTML=rResumo();
+  else if(tab==='horas') m.innerHTML=rHoras();
+  else if(tab==='mapa') m.innerHTML=rMapa();
+  else if(tab==='arquivo'){ m.innerHTML=rArquivo(); if(arqFotos[arqTipo]===null) carregarArquivo(); }
+  else if(tab==='equipa') m.innerHTML=rEquipa();
+  else if(tab==='faturas') m.innerHTML=rFaturas();
+  else m.innerHTML=rDados();
+
+  // FAB
+  const fab=document.getElementById('fab');
+  fab.innerHTML='';
+
+  ligar();
+}
+
+/* ============================ EVENTOS ============================ */
+function ligar(){
+  // --- AUTO: lista ---
+  const bNovaTop=document.getElementById('bNovaZonaTop');
+  if(bNovaTop) bNovaTop.onclick=()=>{ editZona='new'; render(); };
+  document.querySelectorAll('[data-zedit]').forEach(b=>b.onclick=(e)=>{ e.stopPropagation(); editZona=+b.dataset.zedit; render(); });
+  document.querySelectorAll('[data-zdel]').forEach(b=>b.onclick=(e)=>{
+    e.stopPropagation();
+    if(!confirm('Apagar esta zona do auto?')) return;
+    const id=+b.dataset.zdel; const db=DB(); db.zones=db.zones.filter(z=>z.id!==id); saveLocal(); render(); toast('Zona apagada');
+  });
+  // anular/reativar uma FASE
+  document.querySelectorAll('[data-toggleanul]').forEach(b=>b.onclick=(e)=>{
+    e.stopPropagation();
+    const [zid,fid]=b.dataset.toggleanul.split('|');
+    const db=DB(); const z=db.zones.find(x=>String(x.id)===zid); if(!z) return;
+    if(!z.fases) z.fases={};
+    const fd=z.fases[fid];
+    if(fd&&fd.anulada){ z.fases[fid]=fd.anterior||null; }      // reativar: repõe o estado anterior
+    else { z.fases[fid]={anulada:true, anterior:fd||null}; }   // anular: guarda o anterior
+    saveLocal(); render(); toast('Fase atualizada');
+  });
+  // anular/reativar a ZONA inteira
+  document.querySelectorAll('[data-togglezona]').forEach(b=>b.onclick=(e)=>{
+    e.stopPropagation();
+    const id=+b.dataset.togglezona; const db=DB(); const z=db.zones.find(x=>x.id===id); if(!z) return;
+    z.anulada=!z.anulada; saveLocal(); render(); toast(z.anulada?'Zona anulada':'Zona reativada');
+  });
+  // abrir/fechar mês
+  document.querySelectorAll('[data-gmes]').forEach(tr=>tr.onclick=()=>{ const mk=tr.getAttribute('data-gmes'); autoMesAberto[mk]=(autoMesAberto[mk]===false); render(); });
+  // abrir/fechar todos
+  const bAll=document.getElementById('bAutoToggleAll');
+  if(bAll) bAll.onclick=()=>{
+    const db=DB(); const mks=[...new Set((db.zones||[]).map(z=>(z.dataAuto||'').slice(0,7)||'sem'))];
+    const algumFechado=mks.some(mk=>autoMesAberto[mk]===false);
+    mks.forEach(mk=>autoMesAberto[mk]=algumFechado?true:false); // se algum fechado -> abre todos; senão fecha todos
+    render();
+  };
+  // registar horas
+  const bH=document.getElementById('bRegHoras');
+  if(bH) bH.onclick=registarHoras;
+  document.querySelectorAll('[data-delh]').forEach(b=>b.onclick=()=>{
+    const id=+b.dataset.delh; const db=DB(); db.extras=(db.extras||[]).filter(e=>e.id!==id); saveLocal(); render(); toast('Horas apagadas');
+  });
+
+  // --- AUTO: formulário ---
+  document.querySelectorAll('.fOn').forEach(c=>c.addEventListener('change',()=>{
+    const body=document.querySelector(`[data-fbody="${c.dataset.f}"]`); if(body) body.style.display=c.checked?'':'none';
+  }));
+  document.querySelectorAll('.fEq label').forEach(l=>{
+    const cb=l.querySelector('input'); if(!cb)return;
+    cb.addEventListener('change',()=>l.classList.toggle('sel',cb.checked));
+  });
+  // área automática
+  const zc=document.getElementById('zComp'), za=document.getElementById('zAlt'), zar=document.getElementById('zArea');
+  function autoArea(){ const c=parseFloat(zc.value)||0, a=parseFloat(za.value)||0; if(c>0&&a>0) zar.value=(Math.round(c*a*1000)/1000); }
+  if(zc&&za){ zc.addEventListener('input',autoArea); za.addEventListener('input',autoArea); }
+  const bSave=document.getElementById('bSaveZona');
+  if(bSave) bSave.onclick=guardarZona;
+  const bCanc=document.getElementById('bCancZona');
+  if(bCanc) bCanc.onclick=()=>{ editZona=null; render(); };
+
+  // --- MAPA ---
+  document.querySelectorAll('[data-msel]').forEach(b=>b.onclick=()=>{ mapSel=b.dataset.msel; render(); });
+  const bAddMes=document.getElementById('bAddMes');
+  if(bAddMes) bAddMes.onclick=()=>{
+    const v=(document.getElementById('mapMesPick').value||'').trim();
+    if(!/^\d{4}-\d{2}$/.test(v)){ toast('Escolhe um mês válido'); return; }
+    if(!mesesExtra.includes(v)) mesesExtra.push(v);
+    render(); toast('Mês '+mesLbl(v)+' adicionado');
+  };
+  document.querySelectorAll('.cel').forEach(c=>c.onclick=()=>marcarDia(c.dataset.cnome, c.dataset.cdia));
+  document.querySelectorAll('[data-mapdia]').forEach(th=>th.onclick=()=>marcarDiaEquipa(th.dataset.mapdia));
+  document.querySelectorAll('[data-mapmes]').forEach(hd=>hd.onclick=()=>{
+    const ym=hd.dataset.mapmes; const g=document.getElementById('grid_'+ym); const ar=document.getElementById('arr_'+ym);
+    if(g){ const hide=g.style.display!=='none'; g.style.display=hide?'none':''; if(ar)ar.textContent=hide?'▶':'▼'; }
+  });
+  document.querySelectorAll('[data-rmmes]').forEach(b=>b.onclick=(e)=>{
+    e.stopPropagation();
+    const ym=b.dataset.rmmes; mesesExtra=mesesExtra.filter(m=>m!==ym); render(); toast('Mês removido');
+  });
+
+  // --- DADOS ---
+  const bSc=document.getElementById('bSaveChefe');
+  if(bSc) bSc.onclick=()=>{ chefe=(document.getElementById('dChefe').value||'').trim().toUpperCase(); saveLocal(); render(); toast('Guardado'); };
+  const bNoD=document.getElementById('bNovaObraDados'); if(bNoD) bNoD.onclick=pedirNovaObra;
+  document.querySelectorAll('[data-obradel]').forEach(b=>b.onclick=()=>{
+    const id=b.dataset.obradel; const o=STORE.obras.find(x=>x.id===id); if(!o) return;
+    if(!confirm('Eliminar a obra "'+o.nome+'"? Apaga o auto e o mapa dela. Não tem retorno.')) return;
+    eliminarObra(id); render(); toast('Obra eliminada');
+  });
+  const bImp=document.getElementById('bImport');
+  if(bImp) bImp.onclick=importar;
+  const bImpC=document.getElementById('bImpCancel'); if(bImpC) bImpC.onclick=()=>{ importFonte=null; render(); };
+  document.querySelectorAll('[data-impobra]').forEach(b=>b.onclick=()=>{
+    const i=+b.dataset.impobra; const src=importFonte&&importFonte[i]; if(!src) return;
+    const r=importarObra(src);
+    importFonte=null; tab='auto'; render();
+    toast(`Obra ${r}: ${src.nome}`);
+  });
+  const bEa=document.getElementById('bExpAuto'); if(bEa) bEa.onclick=()=>exportarAuto('file');
+  const bCa=document.getElementById('bCopyAuto'); if(bCa) bCa.onclick=()=>exportarAuto('copy');
+  const bEfu=document.getElementById('bExpFull'); if(bEfu) bEfu.onclick=()=>exportarFull('file');
+  const bCfu=document.getElementById('bCopyFull'); if(bCfu) bCfu.onclick=()=>exportarFull('copy');
+  const bBk=document.getElementById('bBackup'); if(bBk) bBk.onclick=backupApp;
+  const bRs=document.getElementById('bRestore'); if(bRs) bRs.onclick=restaurarApp;
+  const bEf=document.getElementById('bExpFat'); if(bEf) bEf.onclick=exportarFaturasCSV;
+  const bR=document.getElementById('bReset');
+  if(bR) bR.onclick=async()=>{
+    if(!confirm('APAGAR TUDO desta app? Obras, autos, mapa, horas, equipa, faturas e fotos. Isto não pode ser desfeito.')) return;
+    if(!confirm('Tens a certeza? Vai ficar tudo vazio.')) return;
+    await fotoApagarTudo();
+    arqFotos={auto:null, fatura:null};
+    STORE=storeVazio(); chefe=''; editZona=null; mapSel=null; mesesExtra=[]; resumoScope='obra';
+    saveLocal(); tab='dados'; render(); toast('Tudo apagado');
+  };
+
+  // --- EQUIPA ---
+  // --- ARQUIVO (fotos) ---
+  document.querySelectorAll('[data-arqtipo]').forEach(b=>b.onclick=()=>{ arqTipo=b.dataset.arqtipo; if(arqFotos[arqTipo]===null) carregarArquivo(); else render(); });
+  const arqFile=document.getElementById('arqFile');
+  const bTirar=document.getElementById('bArqTirar');
+  if(bTirar && arqFile){
+    bTirar.onclick=()=>arqFile.click();
+    arqFile.onchange=async()=>{
+      const file=arqFile.files&&arqFile.files[0]; if(!file) return;
+      const desc=(document.getElementById('arqDesc').value||'').trim();
+      toast('A processar foto…');
+      try{
+        const img=await comprimirImagem(file);
+        const reg={ id:Date.now()+'_'+Math.random().toString(36).slice(2,7), tipo:arqTipo, desc, data:hojeISO(), img };
+        await fotoGuardar(reg);
+        arqFotos[arqTipo]=null; // forçar recarregar
+        toast('Foto guardada ✓'); carregarArquivo();
+      }catch(e){ toast('Não consegui guardar a foto'); }
+    };
+  }
+  document.querySelectorAll('[data-arqdel]').forEach(b=>b.onclick=async()=>{
+    if(!confirm('Apagar esta foto?')) return;
+    await fotoApagar(b.dataset.arqdel); arqFotos[arqTipo]=null; toast('Foto apagada'); carregarArquivo();
+  });
+  document.querySelectorAll('[data-arqver]').forEach(img=>img.onclick=()=>abrirFotoGrande(img.src));
+
+  // --- FATURAS (aba) ---
+  const bAddFat=document.getElementById('bAddFat');
+  if(bAddFat) bAddFat.onclick=()=>{
+    const numero=(document.getElementById('fNum').value||'').trim();
+    const data=document.getElementById('fData').value||hojeISO();
+    const valor=parseFloat(document.getElementById('fValor').value)||0;
+    const desc=(document.getElementById('fDesc').value||'').trim();
+    const estadoEl=document.querySelector('#fEstado input:checked');
+    const estado=estadoEl?estadoEl.value:'pendente';
+    if(!numero && !desc){ toast('Mete o nº ou a descrição'); return; }
+    if(!valor){ toast('Falta o valor'); return; }
+    adicionarFatura({numero,data,valor,desc,estado}); render(); toast('Fatura registada ✓');
+  };
+  document.querySelectorAll('#fEstado label input').forEach(r=>r.addEventListener('change',()=>{
+    document.querySelectorAll('#fEstado label').forEach(l=>l.classList.toggle('sel', l.querySelector('input').checked));
+  }));
+  document.querySelectorAll('[data-fatfiltro]').forEach(b=>b.onclick=()=>{ fatFiltro=b.dataset.fatfiltro; render(); });
+  document.querySelectorAll('[data-fatestado]').forEach(b=>b.onclick=()=>{ alternarEstadoFatura(+b.dataset.fatestado); render(); });
+  document.querySelectorAll('[data-fatdel]').forEach(b=>b.onclick=()=>{
+    if(!confirm('Apagar esta fatura?')) return;
+    removerFatura(+b.dataset.fatdel); render(); toast('Fatura apagada');
+  });
+
+  // --- EQUIPA (aba) ---
+  document.querySelectorAll('.eqCargo').forEach(s=>s.onchange=()=>{ setCargo(s.dataset.nome, s.value); render(); });
+  document.querySelectorAll('[data-eqdel]').forEach(b=>b.onclick=()=>{
+    const n=b.dataset.eqdel; if(!confirm('Remover '+n+' da equipa? (sai de todas as obras)')) return;
+    removerFuncionario(n); render(); toast(n+' removido');
+  });
+  const bEqAdd=document.getElementById('eqAdd');
+  if(bEqAdd) bEqAdd.onclick=()=>{
+    const inp=document.getElementById('eqNovo'); const nome=(inp.value||'').trim().toUpperCase();
+    if(!nome){ toast('Escreve o nome'); return; }
+    adicionarFuncionario(nome,'OFICIAL'); render(); toast(nome+' adicionado');
+  };
+}
+
+function guardarZona(){
+  const db=DB(); const FS=fasesObra();
+  const desc=(document.getElementById('zDesc').value||'').trim();
+  let comp=parseFloat(document.getElementById('zComp').value)||0;
+  let alt=parseFloat(document.getElementById('zAlt').value)||0;
+  let area=parseFloat(document.getElementById('zArea').value)||0;
+  if(!area && comp>0 && alt>0) area=Math.round(comp*alt*1000)/1000;
+  // garantir que comp/alt ficam sempre guardados de forma coerente com a área
+  if(area>0){
+    if(comp>0 && alt<=0) alt=Math.round((area/comp)*1000)/1000;
+    else if(alt>0 && comp<=0) comp=Math.round((area/alt)*1000)/1000;
+    else if(comp<=0 && alt<=0){ comp=area; alt=1; }
+  }
+  const dataAuto=document.getElementById('zData').value||hojeISO();
+  if(!desc){ toast('Falta a descrição da zona'); return; }
+  if(!area){ toast('Falta a área (m²)'); return; }
+
+  const fases={};
+  FS.forEach(f=>{
+    const on=document.querySelector(`.fOn[data-f="${f.id}"]`).checked;
+    if(!on){ fases[f.id]=null; return; }
+    const mes=(document.querySelector(`.fMes[data-f="${f.id}"]`).value||mesAtual()).trim();
+    const preco=parseFloat(document.querySelector(`.fPreco[data-f="${f.id}"]`).value)||0;
+    const equipa=[...document.querySelectorAll(`.fEq[data-f="${f.id}"] input:checked`)].map(i=>i.value);
+    fases[f.id]={mes,preco,equipa};
+  });
+  // preservar fases anuladas pré-existentes
+  if(editZona!=='new'){ const old=db.zones.find(z=>z.id===editZona); if(old&&old.fases){ FS.forEach(f=>{ if(old.fases[f.id]&&old.fases[f.id].anulada&&!fases[f.id]) fases[f.id]=old.fases[f.id]; }); } }
+
+  if(editZona==='new'){
+    const id=db.nextZoneId||((db.zones.reduce((m,z)=>Math.max(m,z.id||0),0))+1);
+    db.zones.push({id, desc, comp, alt, area, dataAuto, precos:JSON.parse(JSON.stringify(db.config.precos||{})), fases});
+    db.nextZoneId=id+1;
+  } else {
+    const z=db.zones.find(x=>x.id===editZona);
+    Object.assign(z,{desc,comp,alt,area,dataAuto,fases});
+  }
+  if(!db.histCfg) db.histCfg=[];
+  db.histCfg.unshift({ts:new Date().toISOString().slice(0,16).replace('T',' '), txt:`[Chefe${chefe?' '+chefe:''}] zona "${desc}" lançada/editada`});
+  editZona=null; saveLocal(); render(); toast('Zona guardada ✓');
+}
+
+function registarHoras(){
+  const db=DB();
+  const desc=(document.getElementById('hDesc').value||'').trim();
+  const qtd=parseFloat(document.getElementById('hQtd').value)||0;
+  const preco=(db.config.precos&&db.config.precos.HORAS!=null)?db.config.precos.HORAS:12;
+  const mes=(document.getElementById('hMes').value||mesAtual()).trim();
+  const eq=[...document.querySelectorAll('#hEq input:checked')].map(i=>i.value);
+  if(!desc){ toast('Falta a descrição'); return; }
+  if(!qtd){ toast('Falta o nº de horas'); return; }
+  if(!db.extras) db.extras=[];
+  const id=db.nextExtraId||((db.extras.reduce((m,e)=>Math.max(m,e.id||0),0))+1);
+  db.extras.push({id, desc, area:qtd, preco, mes, equipa:eq});
+  db.nextExtraId=id+1;
+  saveLocal(); render(); toast('Horas registadas ✓');
+}
+
+// verifica se o funcionário já tem marcação (trabalho/férias/faltas) noutra obra nesse dia
+function ocupadoNoutraObra(nome, ymd){
+  const atual=STORE.ativa;
+  for(const o of STORE.obras){
+    if(o.id===atual) continue;
+    const aus=o.db.ausencias||[];
+    if(aus.some(a=>a.nome===nome && a.dia===ymd)) return o.nome;
+  }
+  return null;
+}
+
+function marcarDia(nome, ymd){
+  const db=DB(); if(!db.ausencias) db.ausencias=[];
+  const i=db.ausencias.findIndex(a=>a.nome===nome&&a.dia===ymd);
+  if(mapSel==='apagar'){ if(i>=0) db.ausencias.splice(i,1); saveLocal(); pintaCelula(nome,ymd); return; }
+  // bloquear se já estiver noutra obra nesse dia
+  const outra=ocupadoNoutraObra(nome, ymd);
+  if(outra){ toast(`${nome} já está em ${lblObraCurto(outra)} no dia ${ymd.slice(8)}`); return; }
+  if(mapSel.startsWith('fase:')){ const fase=mapSel.slice(5); const rec={nome,dia:ymd,tipo:'trabalho',fase}; if(i>=0) db.ausencias[i]=rec; else db.ausencias.push(rec); }
+  else { const rec={nome,dia:ymd,tipo:mapSel}; if(i>=0) db.ausencias[i]=rec; else db.ausencias.push(rec); }
+  saveLocal();
+  pintaCelula(nome,ymd);
+}
+function marcarDiaEquipa(ymd){
+  if(mapSel==='apagar'){
+    equipaObra().forEach(nome=>{ const db=DB(); if(!db.ausencias)db.ausencias=[]; const i=db.ausencias.findIndex(a=>a.nome===nome&&a.dia===ymd); if(i>=0) db.ausencias.splice(i,1); pintaCelula(nome,ymd); });
+    saveLocal(); return;
+  }
+  let bloqueados=[];
+  equipaObra().forEach(nome=>{
+    const outra=ocupadoNoutraObra(nome, ymd);
+    if(outra){ bloqueados.push(nome+' ('+lblObraCurto(outra)+')'); return; }
+    const db=DB(); if(!db.ausencias) db.ausencias=[];
+    const i=db.ausencias.findIndex(a=>a.nome===nome&&a.dia===ymd);
+    if(mapSel.startsWith('fase:')){ const fase=mapSel.slice(5); const rec={nome,dia:ymd,tipo:'trabalho',fase}; if(i>=0) db.ausencias[i]=rec; else db.ausencias.push(rec); }
+    else { const rec={nome,dia:ymd,tipo:mapSel}; if(i>=0) db.ausencias[i]=rec; else db.ausencias.push(rec); }
+    pintaCelula(nome,ymd);
+  });
+  saveLocal();
+  if(bloqueados.length) toast('Já noutra obra: '+bloqueados.join(', '));
+}
+// nome curto da obra para mensagens
+function lblObraCurto(nome){ const m=nome.match(/SEGOVIA[_\s]*(\d+)/i); return m?('Segovia '+m[1]):nome.replace(/_/g,' '); }
+function pintaCelula(nome,ymd){
+  const FS=fasesObra(); const db=DB();
+  const a=db.ausencias.find(x=>x.nome===nome&&x.dia===ymd);
+  const cel=document.querySelector(`.cel[data-cnome="${CSS.escape(nome)}"][data-cdia="${ymd}"]`);
+  if(!cel) return;
+  const dow=new Date(ymd+'T00:00:00').getDay(); const we=dow===0||dow===6;
+  const TIPOS={ferias:'#C9A227',faltas:'#C0392B'};
+  if(!a){ cel.style.background=feriadoNome(ymd)?'#EFE3F5':(we?'#EEF1F0':'#fff'); cel.textContent=''; }
+  else if(a.tipo==='trabalho'){ cel.style.background=faseCor(a.fase||FS[0].id); cel.textContent=faseLetra(a.fase||FS[0].id); }
+  else { cel.style.background=TIPOS[a.tipo]||'#999'; cel.textContent=a.tipo==='ferias'?'F':'•'; }
+}
+
+/* ============================ IMPORT / EXPORT ============================ */
+// extrai o STORE de um ficheiro colado (aceita vários formatos)
+function extrairStore(obj){
+  let s=obj;
+  if(obj && obj.STORE && typeof obj.STORE==='object') s=obj.STORE;
+  else if(obj && obj.store){
+    if(typeof obj.store==='string'){ try{ s=JSON.parse(obj.store); }catch(e){ s=obj; } }
+    else if(typeof obj.store==='object') s=obj.store;
+  }
+  return (s && Array.isArray(s.obras)) ? s : null;
+}
+// importa UMA obra do ficheiro: cria se não existe, substitui tudo se já existe
+function importarObra(srcObra){
+  const src=srcObra.db||{};
+  const db=novaObraDB(srcObra.nome);
+  db.config.obra=(src.config&&src.config.obra)||srcObra.nome;
+  db.config.cliente=(src.config&&src.config.cliente)||'';
+  if(src.config&&Array.isArray(src.config.fases)) db.config.fases=JSON.parse(JSON.stringify(src.config.fases));
+  if(src.config&&src.config.precos) db.config.precos=JSON.parse(JSON.stringify(src.config.precos));
+  db.workers=Array.isArray(src.workers)?src.workers.map(w=>({nome:w.nome})):[];
+  if(src.roles&&typeof src.roles==='object') db.roles=JSON.parse(JSON.stringify(src.roles));
+  db.zones=Array.isArray(src.zones)?JSON.parse(JSON.stringify(src.zones)):[];
+  db.ausencias=Array.isArray(src.ausencias)?JSON.parse(JSON.stringify(src.ausencias)):[];
+  db.extras=Array.isArray(src.extras)?JSON.parse(JSON.stringify(src.extras)):[];
+  db.nextZoneId=(db.zones.reduce((m,z)=>Math.max(m,z.id||0),0))+1;
+  db.nextExtraId=(db.extras.reduce((m,e)=>Math.max(m,e.id||0),0))+1;
+
+  // procurar obra existente: por id, senão por nome
+  let idx=STORE.obras.findIndex(o=>o.id===srcObra.id);
+  if(idx<0) idx=STORE.obras.findIndex(o=>o.nome===srcObra.nome);
+  const id = idx>=0 ? STORE.obras[idx].id : (srcObra.id||('obra'+Date.now()));
+  const reg={id, nome:srcObra.nome, db};
+  if(idx>=0) STORE.obras[idx]=reg; else STORE.obras.push(reg);
+  STORE.ativa=id;
+  // adicionar funcionários desta obra à equipa global (se ainda não existirem)
+  garantirEquipaGlobal();
+  (db.workers||[]).forEach(w=>{ if(!STORE.equipaGlobal.some(x=>x.nome===w.nome)){ const r=db.roles||{}; const meses=Object.keys(r).sort(); let cargo='OFICIAL'; for(let i=meses.length-1;i>=0;i--){ if(r[meses[i]]&&r[meses[i]][w.nome]){cargo=r[meses[i]][w.nome];break;} } STORE.equipaGlobal.push({nome:w.nome,cargo}); } });
+  STORE.equipaGlobal.sort((a,b)=>a.nome<b.nome?-1:1);
+  garantirFasesTodas();
+  saveLocal();
+  return (idx>=0?'substituída':'criada');
+}
+function importar(){
+  const txt=(document.getElementById('dImport').value||'').trim();
+  if(!txt){ toast('Cola o JSON primeiro'); return; }
+  let obj; try{ obj=JSON.parse(txt); }catch(e){ toast('JSON inválido'); return; }
+  const s=extrairStore(obj);
+  if(!s){ toast('Não reconheci o formato'); return; }
+  // guardar as obras do ficheiro e mostrar a lista para escolher
+  importFonte=s.obras;
+  render();
+}
+// AUTO: ficheiro compatível com o importador "constroii_zonas_obra_ativa" da app Funcionários.
+// Substitui SÓ as zonas da obra escolhida; mantém config, preços, fases, funcionários e pagamentos.
+function exportarAuto(modo){
+  const sel=document.getElementById('expObra');
+  const obraId = sel ? sel.value : STORE.ativa;
+  const obra = STORE.obras.find(o=>o.id===obraId) || obraAtiva();
+  const db = obra.db;
+  const fasesIds = (db.config.fases||[]).map(f=>f.id);   // todas (F1..F6), tal como na app grande
+  const precos = {}; fasesIds.forEach(id=>{ precos[id] = (db.config.precos&&db.config.precos[id]!=null)?db.config.precos[id]:0; });
+
+  const zones = (db.zones||[]).map(z=>{
+    const fases={};
+    fasesIds.forEach(id=>{
+      const fd = z.fases && z.fases[id];
+      if(fd && fd.anulada) fases[id]={anulada:true};
+      else if(fd && fd.mes) fases[id]={mes:fd.mes, preco:(fd.preco!=null?fd.preco:(precos[id]||0))};
+      else fases[id]=null;
+    });
+    return {desc:z.desc||'', comp:z.comp||0, alt:z.alt||0, area:z.area||0, dataAuto:z.dataAuto||'', anulada:!!z.anulada, fases};
+  });
+
+  const pacote = {
+    tipo:'constroii_zonas_obra_ativa',
+    origem:'app_chefe_grupo',
+    chefe: chefe||'',
+    obra: obra.nome,
+    exportado: hojeISO(),
+    precos,
+    zones
+  };
+  const out=JSON.stringify(pacote, null, 1);
+  const nomeFich = `auto_${(obra.nome||'obra').replace(/\W+/g,'_').toLowerCase()}_${hojeISO()}.json`;
+  entregar(out, nomeFich, modo, `AUTO de ${obra.nome}: ${zones.length} zonas`);
+}
+
+// COMPLETA: backup multi-obra (auto + mapa). Substitui TUDO na app Funcionários.
+function exportarFull(modo){
+  sincronizarEquipaNasObras();   // propaga equipa global -> workers+roles de cada obra
+  const pacote = { tipo:'constroii_backup_multi', origem:'app_chefe_grupo', exportado:hojeISO(), store:STORE };
+  const out=JSON.stringify(pacote, null, 1);
+  entregar(out, `constroii_chefe_completo_${hojeISO()}.json`, modo, 'Cópia completa (auto + mapa)');
+}
+
+function entregar(out, nomeFich, modo, label){
+  if(modo==='copy'){
+    if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(out).then(()=>toast((label||'JSON')+' copiado ✓'),()=>fallbackCopy(out));
+    else fallbackCopy(out);
+    return;
+  }
+  const blob=new Blob([out],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url; a.download=nomeFich;
+  document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  toast((label||'Ficheiro')+' descarregado ✓');
+}
+function fallbackCopy(t){ const ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');toast('JSON copiado ✓');}catch(e){toast('Copia manualmente');} ta.remove(); }
+
+// CÓPIA DE SEGURANÇA da própria app (inclui faturas, equipa global, tudo)
+function backupApp(){
+  sincronizarEquipaNasObras();
+  garantirFaturas();
+  const pacote={ tipo:'constroii_chefe_backup', versao:1, exportado:hojeISO(), STORE, chefe, faturas:STORE.faturas };
+  const out=JSON.stringify(pacote);
+  entregar(out, `copia_chefe_${hojeISO()}.json`, 'file', 'Cópia de segurança');
+}
+function restaurarApp(){
+  const txt=(document.getElementById('dRestore').value||'').trim();
+  if(!txt){ toast('Cola a cópia primeiro'); return; }
+  let obj; try{ obj=JSON.parse(txt); }catch(e){ toast('Ficheiro inválido'); return; }
+  const s = obj.STORE || (obj.store && typeof obj.store==='object' ? obj.store : (obj.obras?obj:null));
+  if(!s || !Array.isArray(s.obras)){ toast('Não reconheci esta cópia'); return; }
+  if(!confirm('Restaurar esta cópia substitui TUDO o que está aqui agora. Continuar?')) return;
+  STORE=s;
+  if(obj.chefe) chefe=obj.chefe;
+  if(Array.isArray(obj.faturas)) STORE.faturas=obj.faturas;
+  STORE.obras.forEach(o=>{ if(!o.db.ausencias)o.db.ausencias=[]; if(!o.db.zones)o.db.zones=[]; if(!o.db.extras)o.db.extras=[]; });
+  garantirFasesTodas(); garantirEquipaGlobal(); garantirFaturas();
+  if(!STORE.ativa||!STORE.obras.some(o=>o.id===STORE.ativa)) STORE.ativa=STORE.obras[0].id;
+  saveLocal(); tab='auto'; render(); toast('Cópia restaurada ✓');
+}
+// exportar faturas em CSV
+function exportarFaturasCSV(){
+  garantirFaturas();
+  if(!STORE.faturas.length){ toast('Sem faturas'); return; }
+  const esc=v=>{ const s=String(v==null?'':v); return /[",;\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s; };
+  const linhas=[['Numero','Data','Valor','Descricao','Estado']];
+  STORE.faturas.slice().sort((a,b)=>(a.data||'').localeCompare(b.data||'')).forEach(f=>{
+    linhas.push([f.numero||'', f.data||'', String(f.valor||0).replace('.',','), f.desc||'', f.estado||'']);
+  });
+  const csv='\uFEFF'+linhas.map(l=>l.map(esc).join(';')).join('\r\n');
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download=`faturas_${hojeISO()}.csv`;
+  document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  toast('Faturas exportadas ✓');
+}
+
+/* ============================ ARRANQUE ============================ */
+document.querySelectorAll('#nav button').forEach(b=>b.addEventListener('click',()=>{ tab=b.dataset.t; if(tab==='resumo') resumoScope='obra'; editZona=null; render(); }));
+document.getElementById('btnTodas').addEventListener('click',()=>{ tab='resumo'; resumoScope='todas'; editZona=null; render(); });
+document.getElementById('btnEquipa').addEventListener('click',()=>{ tab='equipa'; editZona=null; render(); });
+document.getElementById('btnFaturas').addEventListener('click',()=>{ tab='faturas'; editZona=null; render(); });
+
+loadLocal();
+garantirFasesTodas();
+garantirEquipaGlobal();
+render();
+</script>
+</body>
+</html>
